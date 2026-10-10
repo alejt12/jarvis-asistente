@@ -8,13 +8,16 @@
 </head>
 <body>
     <div class="contenedor">
+
         <!-- Cabeza del Robot Animada -->
         <div class="robot-cabeza">
-            <div class="antena"></div>
+            <div class="antena">
+                <div class="luz"></div>
+            </div>
             <div class="cara">
                 <div class="ojos">
-                    <div class="ojo izquierdo" id="ojoIzq"></div>
-                    <div class="ojo derecho" id="ojoDer"></div>
+                    <div class="ojo" id="ojoIzq"></div>
+                    <div class="ojo" id="ojoDer"></div>
                 </div>
                 <div class="boca" id="boca"></div>
             </div>
@@ -22,18 +25,18 @@
 
         <div class="cabezal">
             <h1>J.A.R.V.I.S</h1>
-            <p class="subtitulo" id="estadoSistema">Sistema Activo — Esperando...</p>
+            <p class="subtitulo" id="estadoSistema">Sistema Activo — Conectado</p>
         </div>
 
         <div class="pantalla">
             <div id="historial" class="historial">
-                <p class="mensaje jarvis">Sistema en línea. Haz un clic para activarme...</p>
+                <p class="mensaje jarvis">Sistema JARVIS en línea. Haz un clic para activarme y te escucharé siempre...</p>
             </div>
         </div>
 
         <div class="controles">
             <button id="btnEscuchar" class="btn-escuchar">🔊 Activar Escucha</button>
-            <button id="btnLimpiar" class="btn-limpiar">Limpiar</button>
+            <button id="btnLimpiar" class="btn-limpiar">Limpiar Pantalla</button>
         </div>
     </div>
 
