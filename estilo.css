@@ -2,31 +2,139 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Courier New', monospace;
 }
 
 body {
-    background: #000;
-    color: #0ff;
+    background: #050a12;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: 
-        radial-gradient(circle at top left, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at bottom right, rgba(0, 100, 255, 0.1) 0%, transparent 50%);
+    font-family: 'Courier New', monospace;
+    color: #0ff;
+    padding: 20px;
 }
 
 .contenedor {
-    width: 90%;
-    max-width: 800px;
+    width: 100%;
+    max-width: 850px;
     border: 2px solid #0ff;
-    border-radius: 15px;
+    border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(0, 255, 255, 0.1);
-    background: rgba(0, 20, 30, 0.8);
+    background: rgba(0, 20, 30, 0.85);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 40px rgba(0, 255, 255, 0.05);
 }
 
+/* ===== CABEZA DEL ROBOT ANIMADA ===== */
+.robot-cabeza {
+    width: 140px;
+    height: 120px;
+    margin: 0 auto 20px;
+    position: relative;
+    animation: flotar 3s ease-in-out infinite;
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.antena {
+    width: 4px;
+    height: 20px;
+    background: #0ff;
+    margin: 0 auto;
+    border-radius: 2px;
+    position: relative;
+}
+
+.antena::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #0ff;
+    border-radius: 50%;
+    position: absolute;
+    top: -6px;
+    left: -4px;
+    box-shadow: 0 0 10px #0ff;
+    animation: parpadear 1s infinite;
+}
+
+@keyframes parpadear {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.cara {
+    width: 100%;
+    height: 100px;
+    background: #0a1a2a;
+    border: 2px solid #0ff;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.25);
+}
+
+.ojos {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 15px;
+}
+
+.ojo {
+    width: 22px;
+    height: 22px;
+    background: #0f0;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #0f0;
+    transition: all 0.3s ease;
+}
+
+/* Cuando habla: ojos se mueven */
+.hablando .ojo {
+    animation: mirar 0.8s infinite alternate;
+}
+
+@keyframes mirar {
+    0% { transform: translateX(-3px) scale(1); }
+    100% { transform: translateX(3px) scale(1.1); }
+}
+
+/* Cuando escucha: ojos brillan fuerte */
+.escuchando .ojo {
+    background: #ff0;
+    box-shadow: 0 0 20px #ff0, 0 0 30px #ff0;
+    animation: pulso 0.5s infinite alternate;
+}
+
+@keyframes pulso {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+.boca {
+    width: 50px;
+    height: 8px;
+    background: #0ff;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+/* Boca animada cuando habla */
+.hablando .boca {
+    animation: hablar 0.3s infinite alternate;
+}
+
+@keyframes hablar {
+    0% { width: 30px; height: 6px; }
+    100% { width: 60px; height: 14px; border-radius: 50%; }
+}
+
+/* ===== RESTO DEL DISEÑO ===== */
 .cabezal {
     text-align: center;
     margin-bottom: 25px;
@@ -34,23 +142,23 @@ body {
 
 h1 {
     font-size: 2.5rem;
-    letter-spacing: 8px;
+    letter-spacing: 12px;
     text-shadow: 0 0 15px #0ff;
+    margin-bottom: 8px;
 }
 
 .subtitulo {
     color: #0f0;
     font-size: 1rem;
-    margin-top: 5px;
 }
 
 .pantalla {
     border: 1px solid #0ff;
     border-radius: 10px;
     padding: 20px;
-    height: 400px;
-    overflow-y: auto;
     background: rgba(0, 0, 0, 0.6);
+    height: 320px;
+    overflow-y: auto;
     margin-bottom: 20px;
 }
 
@@ -73,7 +181,7 @@ h1 {
 }
 
 .usuario {
-    background: rgba(0, 255, 100, 0.1);
+    background: rgba(0, 255, 0, 0.1);
     border-left: 3px solid #0f0;
     color: #0f0;
     text-align: right;
@@ -86,17 +194,18 @@ h1 {
 }
 
 button {
-    padding: 12px 30px;
-    font-size: 1rem;
+    padding: 14px 35px;
+    font-size: 1.1rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+    font-family: inherit;
     transition: all 0.3s ease;
     font-weight: bold;
 }
 
 .btn-escuchar {
-    background: linear-gradient(135deg, #0ff, #0080ff);
+    background: linear-gradient(135deg, #00a8cc, #00ffcc);
     color: #000;
 }
 
@@ -106,8 +215,13 @@ button {
 }
 
 .btn-escuchar.escuchando {
-    background: #f00;
-    animation: parpadeo 1s infinite;
+    background: linear-gradient(135deg, #cc0000, #ff4444);
+    animation: brillo-escucha 1s infinite alternate;
+}
+
+@keyframes brillo-escucha {
+    0% { box-shadow: 0 0 10px #ff0000; }
+    100% { box-shadow: 0 0 25px #ff4444; }
 }
 
 .btn-limpiar {
@@ -119,8 +233,4 @@ button {
 .btn-limpiar:hover {
     background: #333;
     color: #fff;
-}
-
-@keyframes parpadeo {
-    50% { opacity: 0.5; }
 }
