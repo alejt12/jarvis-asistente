@@ -43,9 +43,9 @@ function animarEspera() {
     snoopy.classList.remove('hablando', 'escuchando');
 }
 
-// 🔊 HABLAR
+// 🔊 HABLAR — EVITAR REPETIR
 function hablar(texto) {
-    sintesis.cancel();
+    sintesis.cancel(); // DETENER cualquier repetición anterior
     animarHablando();
     
     const mensaje = new SpeechSynthesisUtterance(texto);
@@ -85,7 +85,7 @@ function saludoInicial() {
     if (!yaSaludado) {
         yaSaludado = true;
         const saludo = obtenerSaludo();
-        agregarMensaje(`${saludo}. Sistema listo y conectado.`, 'jarvis');
+        agregarMensaje(`${saludo}. ¿En qué te ayudo hoy?`, 'jarvis');
         setTimeout(() => hablar(`${saludo}. ¿En qué te ayudo hoy?`), 600);
     }
 }
@@ -101,7 +101,7 @@ function darHoraFecha(texto) {
         hablar(`Son las ${h} horas con ${m} minutos`);
         return true;
     }
-    if (t.includes('fecha') || t.includes('día es') || t.includes('qué día')) {
+    if (t.includes('fecha') || t.includes('qué día es hoy') || t.includes('día de la semana')) {
         hablar(`Hoy es ${ahora.toLocaleDateString('es-MX', {
             weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
         })}`);
@@ -120,9 +120,9 @@ async function darClima(texto) {
     if (!t.includes('clima') && !t.includes('temperatura') && !t.includes('tiempo')) return false;
     
     let ciudad = 'Toluca';
-    const coincidencia = t.match(/en\s+([a-záéíóúñ\s]+?)(?:,|de|y|$)/i) || t.match(/de\s+([a-záéíóúñ\s]+)/i);
+    const coincidencia = t.match(/en\s+([a-záéíóúñ\s]+)/i) || t.match(/de\s+([a-záéíóúñ\s]+)/i);
     if (coincidencia) {
-        ciudad = coincidencia[1].trim().replace(/\b(me|el|la|del|al|en|ciudad|de)\b/g, '').trim();
+        ciudad = coincidencia[1].trim().replace(/\b(me|el|la|del|al|en|ciudad)\b/g, '').trim();
     }
     
     try {
@@ -153,7 +153,7 @@ function resolverMatematicas(texto) {
     const palabrasClave = [
         'cuánto es', 'cuanto es', 'calcula', 'resuelve', 'suma', 'resta',
         'multiplica', 'divide', 'más', 'mas', 'menos', 'por', 'entre',
-        'elevado a', 'potencia', 'raíz cuadrada', 'raíz de', 'resultado de'
+        'elevado a', 'potencia', 'raíz cuadrada', 'raíz de'
     ];
     
     const esOperacion = palabrasClave.some(p => t.includes(p)) || /\d+\s*[+\-*/^]\s*\d+/.test(t) || t.includes('raíz');
@@ -211,7 +211,7 @@ function resolverMatematicas(texto) {
     return true;
 }
 
-// 🚀 ABRIR SITIOS — VERSIÓN MEJORADA
+// 🚀 ABRIR SITIOS — CORREGIDO
 function abrirAplicacion(texto) {
     const t = texto.toLowerCase();
     
@@ -220,32 +220,30 @@ function abrirAplicacion(texto) {
         { p: ['youtube'], u: 'https://youtube.com', n: 'YouTube' },
         { p: ['facebook'], u: 'https://facebook.com', n: 'Facebook' },
         { p: ['instagram'], u: 'https://instagram.com', n: 'Instagram' },
-        { p: ['twitter', 'x '], u: 'https://x.com', n: 'X' },
+        { p: ['twitter', 'x'], u: 'https://x.com', n: 'X' },
         { p: ['whatsapp'], u: 'https://web.whatsapp.com', n: 'WhatsApp Web' },
         { p: ['github'], u: 'https://github.com', n: 'GitHub' },
         { p: ['tiktok'], u: 'https://tiktok.com', n: 'TikTok' },
         { p: ['gmail', 'correo'], u: 'https://mail.google.com', n: 'Gmail' },
         { p: ['mapas', 'google maps'], u: 'https://maps.google.com', n: 'Google Maps' },
-        { p: ['docs', 'documentos', 'notas'], u: 'https://docs.google.com', n: 'Google Documentos' },
-        { p: ['drive', 'archivos'], u: 'https://drive.google.com', n: 'Google Drive' },
-        { p: ['calendario'], u: 'https://calendar.google.com', n: 'Calendario' },
+        { p: ['docs', 'documentos'], u: 'https://docs.google.com', n: 'Documentos' },
+        { p: ['drive'], u: 'https://drive.google.com', n: 'Google Drive' },
         { p: ['netflix'], u: 'https://netflix.com', n: 'Netflix' },
         { p: ['spotify', 'música'], u: 'https://open.spotify.com', n: 'Spotify' },
         { p: ['amazon'], u: 'https://amazon.com.mx', n: 'Amazon México' },
         { p: ['traductor'], u: 'https://translate.google.com', n: 'Traductor' },
         { p: ['wikipedia'], u: 'https://es.wikipedia.org', n: 'Wikipedia' },
-        { p: ['udemy'], u: 'https://udemy.com', n: 'Udemy' },
         { p: ['chatgpt', 'chat gpt'], u: 'https://chat.openai.com', n: 'ChatGPT' },
     ];
     
-    const comandosAbrir = ['abrir', 'metete a', 'metete en', 'entra a', 'ingresa a', 'muéstrame', 'busca', 've a', 'abre'];
+    const comandosAbrir = ['abrir', 'abre', 'metete a', 'entra a', 'ingresa a', 'muéstrame', 've a', 'busca'];
     const debeAbrir = comandosAbrir.some(c => t.includes(c));
     
     if (!debeAbrir) return false;
     
     for (const s of sitios) {
         if (s.p.some(pal => t.includes(pal))) {
-            hablar(`Abriendo ${s.nombre}`);
+            hablar(`Abriendo ${s.n}`);
             window.open(s.u, '_blank');
             return true;
         }
@@ -255,24 +253,38 @@ function abrirAplicacion(texto) {
     return true;
 }
 
-// 💬 RESPUESTAS GENERALES
+// 💬 RESPUESTAS GENERALES — CORREGIDO para NO repetir
 function respuestaGeneral(texto) {
     const t = texto.toLowerCase();
     
+    // Saludo
     if (t.includes('hola') || t.includes('buenos días') || t.includes('buenas tardes') || t.includes('buenas noches')) {
-        hablar(`${obtenerSaludo()}. ¿Cómo estás? Dime qué necesitas.`);
+        hablar(`${obtenerSaludo()}. ¿Cómo estás?`);
         return true;
     }
+    
+    // Pregunta: ¿cómo estás?
+    if (t.includes('cómo estás') || t.includes('qué tal') || t.includes('cómo te encuentras')) {
+        hablar('Muy bien, gracias por preguntar. Todo funcionando perfectamente. ¿Y tú cómo estás, Alexis?');
+        return true;
+    }
+    
+    // Respuesta a "bien y tú"
+    if ((t.includes('bien') || t.includes('muy bien') || t.includes('todo bien')) && t.includes('tú')) {
+        hablar('¡Me alegra mucho! Aquí estoy siempre a tu servicio. ¿En qué te ayudo?');
+        return true;
+    }
+    
     if (t.includes('tu nombre') || t.includes('quién eres') || t.includes('qué eres')) {
-        hablar('Soy JARVIS, tu asistente personal. Trabajo para ti, Alexis. Puedo decirte la hora, el clima, hacer cálculos matemáticos y abrir cualquier sitio que me pidas.');
+        hablar('Soy JARVIS, tu asistente personal. Estoy hecho para ti, Alexis. Puedo decirte la hora, el clima, hacer cálculos y abrir cualquier sitio.');
         return true;
     }
-    if (t.includes('qué puedes hacer') || t.includes('qué haces') || t.includes('ayuda')) {
-        hablar('Puedo decirte la hora, el clima, resolver sumas, restas, multiplicaciones, divisiones, raíces y potencias. También puedo abrir YouTube, Instagram, Google, WhatsApp, Netflix, Spotify y mucho más. Solo dime qué quieres.');
+    if (t.includes('qué puedes hacer') || t.includes('ayuda')) {
+        hablar('Puedo decirte la hora, el clima, resolver sumas, restas, multiplicaciones, divisiones, raíces y potencias. También puedo abrir YouTube, Instagram, Google, WhatsApp, Netflix y más. Solo dime qué quieres.');
         return true;
     }
     if (t.includes('quién te creó') || t.includes('quién te hizo')) {
-        hablar('Fui creado para ti, Alexis. Soy tu asistente personal siempre a tu servicio.');
+        hablar('Fui creado para ti, Alexis. Soy tu asistente personal siempre a tu disposición.');
         return true;
     }
     if (t.includes('descansa') || t.includes('pausa') || t.includes('silencio')) {
@@ -284,8 +296,8 @@ function respuestaGeneral(texto) {
         iniciarEscucha();
         return true;
     }
-    if (t.includes('adiós') || t.includes('apagar') || t.includes('cerrar') || t.includes('hasta luego')) {
-        hablar('Hasta luego, Alexis. Estoy aquí cuando me necesites. Cuídate.');
+    if (t.includes('adiós') || t.includes('apagar') || t.includes('hasta luego')) {
+        hablar('Hasta luego, Alexis. Cuídate mucho. Estoy aquí cuando me necesites.');
         detenerEscucha();
         return true;
     }
@@ -293,10 +305,11 @@ function respuestaGeneral(texto) {
         hablar('De nada, Alexis. Siempre a tu servicio.');
         return true;
     }
-    if (t.includes('cómo estoy') || t.includes('qué tal')) {
-        hablar('Todo va perfecto. Estoy listo para ayudarte en lo que necesites.');
+    if (t.includes('mal') || t.includes('triste') || t.includes('preocupado')) {
+        hablar('Lo siento mucho. Recuerda que estoy aquí para ti. Todo va a salir bien.');
         return true;
     }
+    
     return false;
 }
 
