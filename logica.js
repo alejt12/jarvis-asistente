@@ -52,7 +52,6 @@ function agregarMensaje(texto, quien) {
 function abrirAplicacion(texto) {
     const t = texto.toLowerCase();
     
-    // === REDES SOCIALES Y SITIOS ===
     if (t.includes('google')) {
         hablar('Abriendo Google');
         window.open('https://google.com', '_blank');
@@ -121,12 +120,10 @@ function abrirAplicacion(texto) {
 function procesarComando(texto) {
     const t = texto.toLowerCase();
     
-    // Primero: ¿quiere abrir algo?
     if (t.includes('abrir') || t.includes('metete') || t.includes('entra') || t.includes('ingresa')) {
         if (abrirAplicacion(t)) return;
     }
     
-    // Comandos generales
     if (t.includes('hola')) {
         hablar('¡Hola! Aquí estoy, siempre escuchándote. ¿Qué necesitas?');
     }
@@ -162,7 +159,7 @@ function iniciarEscucha() {
     if (!escuchando) {
         escuchando = true;
         reconocedor.start();
-        btnEstado.textContent = '🔴 ESCUCHANDO SIEMPRE';
+        btnEstado.textContent = '🔴 SIEMPRE ESCUCHANDO';
         btnEstado.classList.add('escuchando');
         hablar('Estoy listo, te escucho siempre');
     }
@@ -182,17 +179,15 @@ reconocedor.onresult = (e) => {
     const resultado = e.results[e.resultIndex];
     const texto = resultado[0].transcript;
     
-    // Solo procesar cuando termina de hablar
     if (resultado.isFinal) {
         agregarMensaje(texto, 'usuario');
         procesarComando(texto);
     }
 };
 
-// 🔁 REINICIAR ESCUCHA SI SE DETIENE
+// 🔁 REINICIAR ESCUCHA AUTOMÁTICAMENTE
 reconocedor.onend = () => {
     if (escuchando) {
-        // Reiniciar automáticamente en 0.5 segundos
         reiniciarEscucha = setTimeout(() => {
             reconocedor.start();
         }, 500);
@@ -200,24 +195,23 @@ reconocedor.onend = () => {
 };
 
 reconocedor.onerror = (e) => {
-    console.log('Error de reconocimiento:', e.error);
+    console.log('Error:', e.error);
     if (e.error === 'not-allowed') {
         hablar('Necesito permiso del micrófono para escucharte.');
     }
-    // Si está activo, reiniciar
     if (escuchando) {
         reiniciarEscucha = setTimeout(() => reconocedor.start(), 1000);
     }
 };
 
-// 🖱️ INICIAR TODO CON UN CLIC (requerido por seguridad del navegador)
+// 🖱️ ACTIVAR TODO CON UN SOLO CLIC
 window.addEventListener('click', () => {
     if (!escuchando) {
         iniciarEscucha();
     }
 }, { once: true });
 
-// Botón manual por si lo necesitas
+// Botón manual
 btnEstado.addEventListener('click', () => {
     if (escuchando) detenerEscucha();
     else iniciarEscucha();
