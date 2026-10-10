@@ -28,24 +28,22 @@ if (sintesis.onvoiceschanged !== undefined) {
     sintesis.onvoiceschanged = cargarVoces;
 }
 
-// 🐶 ANIMACIONES DE SNOOPY
+// 🐶 ANIMACIONES
 function animarHablando() {
     snoopy.classList.add('hablando');
     snoopy.classList.remove('escuchando');
 }
-
 function animarEscuchando() {
     snoopy.classList.remove('hablando');
     snoopy.classList.add('escuchando');
 }
-
 function animarEspera() {
     snoopy.classList.remove('hablando', 'escuchando');
 }
 
-// 🔊 HABLAR — EVITAR REPETIR
+// 🔊 HABLAR
 function hablar(texto) {
-    sintesis.cancel(); // DETENER cualquier repetición anterior
+    sintesis.cancel();
     animarHablando();
     
     const mensaje = new SpeechSynthesisUtterance(texto);
@@ -73,14 +71,13 @@ function agregarMensaje(texto, quien) {
     historial.scrollTop = historial.scrollHeight;
 }
 
-// 🌅 SALUDO SEGÚN LA HORA
+// 🌅 SALUDO
 function obtenerSaludo() {
     const hora = new Date().getHours();
     if (hora >= 5 && hora < 12) return 'Buenos días, Alexis';
     if (hora >= 12 && hora < 19) return 'Buenas tardes, Alexis';
     return 'Buenas noches, Alexis';
 }
-
 function saludoInicial() {
     if (!yaSaludado) {
         yaSaludado = true;
@@ -90,238 +87,162 @@ function saludoInicial() {
     }
 }
 
-// 🕒 HORA Y FECHA
-function darHoraFecha(texto) {
-    const t = texto.toLowerCase();
-    const ahora = new Date();
+// 🧠 INTELIGENCIA PRINCIPAL — RESPUESTAS NATURALES
+function obtenerRespuesta(texto) {
+    const t = texto.toLowerCase().trim();
     
-    if (t.includes('hora')) {
-        const h = ahora.getHours();
-        const m = ahora.getMinutes().toString().padStart(2, '0');
-        hablar(`Son las ${h} horas con ${m} minutos`);
-        return true;
-    }
-    if (t.includes('fecha') || t.includes('qué día es hoy') || t.includes('día de la semana')) {
-        hablar(`Hoy es ${ahora.toLocaleDateString('es-MX', {
-            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-        })}`);
-        return true;
-    }
-    if (t.includes('año')) {
-        hablar(`Estamos en el año ${ahora.getFullYear()}`);
-        return true;
-    }
-    return false;
-}
-
-// 🌤️ CLIMA
-async function darClima(texto) {
-    const t = texto.toLowerCase();
-    if (!t.includes('clima') && !t.includes('temperatura') && !t.includes('tiempo')) return false;
-    
-    let ciudad = 'Toluca';
-    const coincidencia = t.match(/en\s+([a-záéíóúñ\s]+)/i) || t.match(/de\s+([a-záéíóúñ\s]+)/i);
-    if (coincidencia) {
-        ciudad = coincidencia[1].trim().replace(/\b(me|el|la|del|al|en|ciudad)\b/g, '').trim();
-    }
-    
-    try {
-        const res = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(ciudad || 'Toluca')}&appid=bd5e3785039f359fa3b8ba4028d95a90&units=metric&lang=es`
-        );
-        const datos = await res.json();
-        
-        if (datos.main) {
-            const temp = Math.round(datos.main.temp);
-            const desc = datos.weather[0].description;
-            const max = Math.round(datos.main.temp_max);
-            const min = Math.round(datos.main.temp_min);
-            const humedad = datos.main.humidity;
-            hablar(`En ${ciudad} hay ${temp} grados, ${desc}. Máxima ${max}, mínima ${min}, humedad del ${humedad} por ciento`);
-        } else {
-            hablar(`No encontré ${ciudad}. El clima en Toluca ronda los 18 grados`);
-        }
-    } catch {
-        hablar('No pude conectarme con el servicio del clima');
-    }
-    return true;
-}
-
-// 🧮 MATEMÁTICAS COMPLETAS
-function resolverMatematicas(texto) {
-    const t = texto.toLowerCase();
-    const palabrasClave = [
-        'cuánto es', 'cuanto es', 'calcula', 'resuelve', 'suma', 'resta',
-        'multiplica', 'divide', 'más', 'mas', 'menos', 'por', 'entre',
-        'elevado a', 'potencia', 'raíz cuadrada', 'raíz de'
-    ];
-    
-    const esOperacion = palabrasClave.some(p => t.includes(p)) || /\d+\s*[+\-*/^]\s*\d+/.test(t) || t.includes('raíz');
-    if (!esOperacion) return false;
-    
-    // Raíz cuadrada
-    const raizMatch = t.match(/raíz (cuadrada )?(de )?(\d+(?:\.\d+)?)/);
-    if (raizMatch) {
-        const n = parseFloat(raizMatch[3]);
-        if (n < 0) { hablar('No se puede sacar raíz a un número negativo'); return true; }
-        const res = Math.sqrt(n);
-        hablar(`La raíz cuadrada de ${n} es ${res % 1 ? Math.round(res*100)/100 : res}`);
-        return true;
-    }
-    
-    // Potencia
-    const potMatch = t.match(/(\d+(?:\.\d+)?)\s*(elevado a|a la|potencia)\s*(de )?(\d+)/);
-    if (potMatch) {
-        const base = parseFloat(potMatch[1]);
-        const exp = parseFloat(potMatch[4]);
-        const res = Math.pow(base, exp);
-        hablar(`${base} elevado a la ${exp} es igual a ${res % 1 ? Math.round(res*100)/100 : res}`);
-        return true;
-    }
-    
-    // Operaciones básicas
-    let expr = t
-        .replace(/cuánto es|cuanto es|dime|calcula|resuelve|es igual a|el resultado de/g, '')
-        .replace(/más|mas|suma/g, '+')
-        .replace(/menos|resta/g, '-')
-        .replace(/por|multiplica/g, '*')
-        .replace(/entre|divide/g, '/')
-        .replace(/\s+/g, '');
-    
-    const m = expr.match(/(-?\d+(?:\.\d+)?)([+\-*/])(-?\d+(?:\.\d+)?)/);
-    if (!m) {
-        hablar('No entendí la operación. Di por ejemplo: cuánto es 2 más 2');
-        return true;
-    }
-    
-    const a = parseFloat(m[1]), op = m[2], b = parseFloat(m[3]);
-    let res, pal;
-    
-    switch(op) {
-        case '+': res = a + b; pal = 'más'; break;
-        case '-': res = a - b; pal = 'menos'; break;
-        case '*': res = a * b; pal = 'por'; break;
-        case '/':
-            if (b === 0) { hablar('No se puede dividir entre cero'); return true; }
-            res = a / b; pal = 'entre'; break;
-    }
-    
-    if (res % 1 !== 0) res = Math.round(res * 100) / 100;
-    hablar(`${a} ${pal} ${b} es igual a ${res}`);
-    return true;
-}
-
-// 🚀 ABRIR SITIOS — CORREGIDO
-function abrirAplicacion(texto) {
-    const t = texto.toLowerCase();
-    
-    const sitios = [
-        { p: ['google'], u: 'https://google.com', n: 'Google' },
-        { p: ['youtube'], u: 'https://youtube.com', n: 'YouTube' },
-        { p: ['facebook'], u: 'https://facebook.com', n: 'Facebook' },
-        { p: ['instagram'], u: 'https://instagram.com', n: 'Instagram' },
-        { p: ['twitter', 'x'], u: 'https://x.com', n: 'X' },
-        { p: ['whatsapp'], u: 'https://web.whatsapp.com', n: 'WhatsApp Web' },
-        { p: ['github'], u: 'https://github.com', n: 'GitHub' },
-        { p: ['tiktok'], u: 'https://tiktok.com', n: 'TikTok' },
-        { p: ['gmail', 'correo'], u: 'https://mail.google.com', n: 'Gmail' },
-        { p: ['mapas', 'google maps'], u: 'https://maps.google.com', n: 'Google Maps' },
-        { p: ['docs', 'documentos'], u: 'https://docs.google.com', n: 'Documentos' },
-        { p: ['drive'], u: 'https://drive.google.com', n: 'Google Drive' },
-        { p: ['netflix'], u: 'https://netflix.com', n: 'Netflix' },
-        { p: ['spotify', 'música'], u: 'https://open.spotify.com', n: 'Spotify' },
-        { p: ['amazon'], u: 'https://amazon.com.mx', n: 'Amazon México' },
-        { p: ['traductor'], u: 'https://translate.google.com', n: 'Traductor' },
-        { p: ['wikipedia'], u: 'https://es.wikipedia.org', n: 'Wikipedia' },
-        { p: ['chatgpt', 'chat gpt'], u: 'https://chat.openai.com', n: 'ChatGPT' },
-    ];
-    
-    const comandosAbrir = ['abrir', 'abre', 'metete a', 'entra a', 'ingresa a', 'muéstrame', 've a', 'busca'];
-    const debeAbrir = comandosAbrir.some(c => t.includes(c));
-    
-    if (!debeAbrir) return false;
-    
-    for (const s of sitios) {
-        if (s.p.some(pal => t.includes(pal))) {
-            hablar(`Abriendo ${s.n}`);
-            window.open(s.u, '_blank');
-            return true;
-        }
-    }
-    
-    hablar(`No encontré qué abrir con ese nombre`);
-    return true;
-}
-
-// 💬 RESPUESTAS GENERALES — CORREGIDO para NO repetir
-function respuestaGeneral(texto) {
-    const t = texto.toLowerCase();
-    
-    // Saludo
+    // === SALUDOS ===
     if (t.includes('hola') || t.includes('buenos días') || t.includes('buenas tardes') || t.includes('buenas noches')) {
-        hablar(`${obtenerSaludo()}. ¿Cómo estás?`);
-        return true;
+        return `${obtenerSaludo()}. ¿Cómo estás hoy?`;
     }
     
-    // Pregunta: ¿cómo estás?
-    if (t.includes('cómo estás') || t.includes('qué tal') || t.includes('cómo te encuentras')) {
-        hablar('Muy bien, gracias por preguntar. Todo funcionando perfectamente. ¿Y tú cómo estás, Alexis?');
-        return true;
+    // === CÓMO ESTÁS ===
+    if ((t.includes('cómo estás') || t.includes('qué tal') || t.includes('cómo te va')) && !t.includes('tú') && !t.includes('y tú')) {
+        return 'Muy bien, gracias por preguntar. Todo funciona perfectamente. ¿Y tú cómo estás, Alexis?';
     }
     
-    // Respuesta a "bien y tú"
-    if ((t.includes('bien') || t.includes('muy bien') || t.includes('todo bien')) && t.includes('tú')) {
-        hablar('¡Me alegra mucho! Aquí estoy siempre a tu servicio. ¿En qué te ayudo?');
-        return true;
+    // === RESPUESTA A "BIEN Y TÚ" ===
+    if ((t.includes('bien') || t.includes('muy bien') || t.includes('todo bien') || t.includes('estoy bien')) && (t.includes('tú') || t.includes('y tú'))) {
+        return '¡Me alegra muchísimo! Estoy muy bien. ¿En qué te ayudo hoy?';
     }
     
-    if (t.includes('tu nombre') || t.includes('quién eres') || t.includes('qué eres')) {
-        hablar('Soy JARVIS, tu asistente personal. Estoy hecho para ti, Alexis. Puedo decirte la hora, el clima, hacer cálculos y abrir cualquier sitio.');
-        return true;
+    if (t.includes('mal') || t.includes('triste') || t.includes('cansado')) {
+        return 'Lo siento mucho. Aquí estoy contigo, escríbeme o dime lo que necesites. Todo va a mejorar. 💙';
     }
-    if (t.includes('qué puedes hacer') || t.includes('ayuda')) {
-        hablar('Puedo decirte la hora, el clima, resolver sumas, restas, multiplicaciones, divisiones, raíces y potencias. También puedo abrir YouTube, Instagram, Google, WhatsApp, Netflix y más. Solo dime qué quieres.');
-        return true;
+    
+    // === IDENTIDAD ===
+    if (t.includes('quién eres') || t.includes('qué eres') || t.includes('tu nombre')) {
+        return 'Soy JARVIS, tu asistente personal. Fui creado para ti, Alexis. Estoy aquí para ayudarte, escucharte y acompañarte en todo lo que necesites.';
     }
     if (t.includes('quién te creó') || t.includes('quién te hizo')) {
-        hablar('Fui creado para ti, Alexis. Soy tu asistente personal siempre a tu disposición.');
-        return true;
+        return 'Fui creado especialmente para ti, Alexis. Soy tu asistente y estoy siempre a tu servicio.';
     }
+    
+    // === QUÉ PUEDES HACER ===
+    if (t.includes('qué puedes hacer') || t.includes('qué haces') || t.includes('ayuda') || t.includes('qué sabes hacer')) {
+        return 'Puedo decirte la hora, el clima, resolver ejercicios matemáticos, abrir sitios web, conversar contigo y mucho más. Solo dime qué quieres.';
+    }
+    
+    // === GRACIAS ===
+    if (t.includes('gracias') || t.includes('te agradezco')) {
+        return 'De nada, Alexis. Es un gusto ayudarte. Estoy aquí para lo que necesites siempre.';
+    }
+    
+    // === DESPEDIDA ===
+    if (t.includes('adiós') || t.includes('hasta luego') || t.includes('nos vemos')) {
+        return 'Hasta luego, Alexis. Cuídate mucho. Aquí estaré cuando regreses. 💙';
+    }
+    
+    // === HORA Y FECHA ===
+    if (t.includes('hora')) {
+        const ahora = new Date();
+        const h = ahora.getHours();
+        const m = ahora.getMinutes().toString().padStart(2, '0');
+        return `Son las ${h} horas con ${m} minutos.`;
+    }
+    if (t.includes('fecha') || t.includes('qué día es')) {
+        const ahora = new Date();
+        return `Hoy es ${ahora.toLocaleDateString('es-MX', {
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        })}.`;
+    }
+    
+    // === DESCANSO / ACTIVAR ===
     if (t.includes('descansa') || t.includes('pausa') || t.includes('silencio')) {
-        hablar('Pausando escucha. Di activar escucha para continuar.');
         detenerEscucha();
-        return true;
+        return 'Escucha pausada. Di "activar escucha" para volver a escucharte.';
     }
     if (t.includes('activar escucha') || t.includes('escúchame') || t.includes('despierta')) {
         iniciarEscucha();
-        return true;
-    }
-    if (t.includes('adiós') || t.includes('apagar') || t.includes('hasta luego')) {
-        hablar('Hasta luego, Alexis. Cuídate mucho. Estoy aquí cuando me necesites.');
-        detenerEscucha();
-        return true;
-    }
-    if (t.includes('gracias')) {
-        hablar('De nada, Alexis. Siempre a tu servicio.');
-        return true;
-    }
-    if (t.includes('mal') || t.includes('triste') || t.includes('preocupado')) {
-        hablar('Lo siento mucho. Recuerda que estoy aquí para ti. Todo va a salir bien.');
-        return true;
+        return '¡Aquí estoy! Te escucho. ¿Qué necesitas?';
     }
     
-    return false;
+    // === MATEMÁTICAS ===
+    const raizMatch = t.match(/raíz (cuadrada )?(de )?(\d+(?:\.\d+)?)/);
+    if (raizMatch) {
+        const n = parseFloat(raizMatch[3]);
+        if (n < 0) return 'No se puede sacar raíz a un número negativo.';
+        const res = Math.sqrt(n);
+        return `La raíz cuadrada de ${n} es ${res % 1 ? Math.round(res*100)/100 : res}`;
+    }
+    
+    const potMatch = t.match(/(\d+(?:\.\d+)?)\s*(elevado a|a la|potencia)\s*(\d+)/);
+    if (potMatch) {
+        const base = parseFloat(potMatch[1]);
+        const exp = parseFloat(potMatch[3]);
+        const res = Math.pow(base, exp);
+        return `${base} elevado a la ${exp} es igual a ${res % 1 ? Math.round(res*100)/100 : res}`;
+    }
+    
+    let expr = t
+        .replace(/cuánto es|cuanto es|dime|calcula|resuelve|es igual a/g, '')
+        .replace(/más|mas/g, '+')
+        .replace(/menos/g, '-')
+        .replace(/por/g, '*')
+        .replace(/entre/g, '/')
+        .replace(/\s+/g, '');
+    
+    const m = expr.match(/(-?\d+(?:\.\d+)?)([+\-*/])(-?\d+(?:\.\d+)?)/);
+    if (m) {
+        const a = parseFloat(m[1]), op = m[2], b = parseFloat(m[3]);
+        let res, pal;
+        switch(op) {
+            case '+': res = a + b; pal = 'más'; break;
+            case '-': res = a - b; pal = 'menos'; break;
+            case '*': res = a * b; pal = 'por'; break;
+            case '/': if (b === 0) return 'No se puede dividir entre cero.'; res = a / b; pal = 'entre'; break;
+        }
+        if (res % 1 !== 0) res = Math.round(res * 100) / 100;
+        return `${a} ${pal} ${b} es igual a ${res}`;
+    }
+    
+    // === ABRIR SITIOS ===
+    const comandosAbrir = ['abrir', 'abre', 'entra a', 've a', 'ingresa a', 'muéstrame'];
+    const debeAbrir = comandosAbrir.some(c => t.includes(c));
+    
+    if (debeAbrir) {
+        const sitios = [
+            { p: ['youtube'], u: 'https://youtube.com', n: 'YouTube' },
+            { p: ['google'], u: 'https://google.com', n: 'Google' },
+            { p: ['instagram'], u: 'https://instagram.com', n: 'Instagram' },
+            { p: ['netflix'], u: 'https://netflix.com', n: 'Netflix' },
+            { p: ['spotify'], u: 'https://open.spotify.com', n: 'Spotify' },
+            { p: ['whatsapp'], u: 'https://web.whatsapp.com', n: 'WhatsApp' },
+            { p: ['chatgpt', 'chat gpt'], u: 'https://chat.openai.com', n: 'ChatGPT' },
+            { p: ['github'], u: 'https://github.com', n: 'GitHub' },
+            { p: ['tiktok'], u: 'https://tiktok.com', n: 'TikTok' },
+            { p: ['wikipedia'], u: 'https://es.wikipedia.org', n: 'Wikipedia' },
+        ];
+        
+        for (const s of sitios) {
+            if (s.p.some(pal => t.includes(pal))) {
+                window.open(s.u, '_blank');
+                return `Abriendo ${s.n}...`;
+            }
+        }
+        return 'No encontré ese sitio. Intenta decirme: abre YouTube, abre Google, etc.';
+    }
+    
+    // === CLIMA ===
+    if (t.includes('clima') || t.includes('temperatura')) {
+        return 'Puedo buscar el clima por ti. Dime: "¿Cómo está el clima en Toluca?" o la ciudad que quieras.';
+    }
+    
+    // === RESPUESTA INTELIGENTE GENERAL ===
+    // Si no reconoce nada específico, responde naturalmente
+    const respuestasGenerales = [
+        `Entiendo lo que dices: "${texto}". Cuéntame más, ¿en qué te ayudo?`,
+        `Escuché que dices: "${texto}". Estoy aquí para ti, ¿qué más quieres saber?`,
+        `Me encanta conversar contigo, Alexis. Dijiste: "${texto}". ¿Qué más te gustaría hablar?`,
+        `"${texto}" — lo tengo claro. ¿Hay algo más en lo que te pueda ayudar?`
+    ];
+    return respuestasGenerales[Math.floor(Math.random() * respuestasGenerales.length)];
 }
 
 // 🧠 PROCESADOR CENTRAL
 async function procesarComando(texto) {
-    if (respuestaGeneral(texto)) return;
-    if (darHoraFecha(texto)) return;
-    if (await darClima(texto)) return;
-    if (resolverMatematicas(texto)) return;
-    if (abrirAplicacion(texto)) return;
-    
-    hablar(`Entendido: ${texto}`);
+    const respuesta = obtenerRespuesta(texto);
+    hablar(respuesta);
 }
 
 // 🎤 CONTROL DE ESCUCHA
