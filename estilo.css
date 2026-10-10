@@ -5,232 +5,297 @@
 }
 
 body {
-    background: #050a12;
+    background: linear-gradient(135deg, #000b1a 0%, #001a33 50%, #001226 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Courier New', monospace;
-    color: #0ff;
+    font-family: 'Segoe UI', 'Courier New', monospace;
+    color: #00ffff;
     padding: 20px;
 }
 
 .contenedor {
     width: 100%;
     max-width: 850px;
-    border: 2px solid #0ff;
-    border-radius: 20px;
-    padding: 30px;
-    background: rgba(0, 20, 30, 0.85);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 40px rgba(0, 255, 255, 0.05);
+    border: 2px solid #00ffff;
+    border-radius: 24px;
+    padding: 35px;
+    background: rgba(0, 20, 40, 0.85);
+    box-shadow: 
+        0 0 40px rgba(0, 255, 255, 0.25),
+        inset 0 0 60px rgba(0, 255, 255, 0.05),
+        0 0 80px rgba(0, 180, 180, 0.1);
+    backdrop-filter: blur(10px);
 }
 
-/* ===== CABEZA DEL ROBOT ANIMADA ===== */
+/* ===== CABEZA DEL ROBOT ===== */
 .robot-cabeza {
-    width: 140px;
-    height: 120px;
-    margin: 0 auto 20px;
+    width: 180px;
+    height: 150px;
+    margin: 0 auto 25px;
     position: relative;
-    animation: flotar 3s ease-in-out infinite;
+    animation: flotar 3.5s ease-in-out infinite;
 }
 
 @keyframes flotar {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    50% { transform: translateY(-10px); }
 }
 
 .antena {
-    width: 4px;
-    height: 20px;
-    background: #0ff;
+    width: 5px;
+    height: 25px;
+    background: linear-gradient(180deg, #00ffff, #008888);
     margin: 0 auto;
-    border-radius: 2px;
+    border-radius: 3px;
     position: relative;
 }
 
-.antena::after {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: #0ff;
+.antena .luz {
+    width: 14px;
+    height: 14px;
+    background: #00ffff;
     border-radius: 50%;
     position: absolute;
-    top: -6px;
-    left: -4px;
-    box-shadow: 0 0 10px #0ff;
-    animation: parpadear 1s infinite;
+    top: -7px;
+    left: -4.5px;
+    box-shadow: 
+        0 0 15px #00ffff,
+        0 0 30px #00ffff,
+        0 0 45px #00aaaa;
+    animation: parpadear 1.2s infinite;
 }
 
 @keyframes parpadear {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
 }
 
 .cara {
     width: 100%;
-    height: 100px;
-    background: #0a1a2a;
-    border: 2px solid #0ff;
-    border-radius: 30px;
+    height: 120px;
+    background: linear-gradient(145deg, #0a2035, #051525);
+    border: 3px solid #00ffff;
+    border-radius: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.25);
+    box-shadow: 
+        0 0 25px rgba(0, 255, 255, 0.3),
+        inset 0 0 20px rgba(0, 255, 255, 0.08);
 }
 
 .ojos {
     display: flex;
-    gap: 25px;
-    margin-bottom: 15px;
+    gap: 35px;
+    margin-bottom: 18px;
 }
 
 .ojo {
-    width: 22px;
-    height: 22px;
-    background: #0f0;
+    width: 26px;
+    height: 26px;
+    background: #00ff00;
     border-radius: 50%;
-    box-shadow: 0 0 12px #0f0;
+    box-shadow: 
+        0 0 15px #00ff00,
+        0 0 25px rgba(0, 255, 0, 0.4);
     transition: all 0.3s ease;
 }
 
-/* Cuando habla: ojos se mueven */
+/* Estado: Hablando */
 .hablando .ojo {
-    animation: mirar 0.8s infinite alternate;
+    background: #00ffff;
+    box-shadow: 
+        0 0 18px #00ffff,
+        0 0 35px rgba(0, 255, 255, 0.5);
+    animation: mirar 0.7s infinite alternate;
 }
 
 @keyframes mirar {
-    0% { transform: translateX(-3px) scale(1); }
-    100% { transform: translateX(3px) scale(1.1); }
+    0% { transform: translateX(-4px) scale(1); }
+    100% { transform: translateX(4px) scale(1.15); }
 }
 
-/* Cuando escucha: ojos brillan fuerte */
+/* Estado: Escuchando */
 .escuchando .ojo {
-    background: #ff0;
-    box-shadow: 0 0 20px #ff0, 0 0 30px #ff0;
+    background: #ffff00;
+    box-shadow: 
+        0 0 20px #ffff00,
+        0 0 40px rgba(255, 255, 0, 0.6);
     animation: pulso 0.5s infinite alternate;
 }
 
 @keyframes pulso {
     0% { transform: scale(1); }
-    100% { transform: scale(1.2); }
+    100% { transform: scale(1.25); }
 }
 
 .boca {
-    width: 50px;
-    height: 8px;
-    background: #0ff;
-    border-radius: 4px;
+    width: 55px;
+    height: 9px;
+    background: linear-gradient(90deg, #00ffff, #00cccc);
+    border-radius: 5px;
     transition: all 0.2s ease;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
 }
 
-/* Boca animada cuando habla */
 .hablando .boca {
-    animation: hablar 0.3s infinite alternate;
+    animation: movimientoBoca 0.25s infinite alternate;
 }
 
-@keyframes hablar {
-    0% { width: 30px; height: 6px; }
-    100% { width: 60px; height: 14px; border-radius: 50%; }
+@keyframes movimientoBoca {
+    0% { width: 35px; height: 7px; border-radius: 4px; }
+    100% { width: 65px; height: 16px; border-radius: 50%; }
 }
 
-/* ===== RESTO DEL DISEÑO ===== */
+/* ===== CABECERA ===== */
 .cabezal {
     text-align: center;
     margin-bottom: 25px;
 }
 
 h1 {
-    font-size: 2.5rem;
-    letter-spacing: 12px;
-    text-shadow: 0 0 15px #0ff;
-    margin-bottom: 8px;
+    font-size: 2.8rem;
+    letter-spacing: 14px;
+    text-shadow: 
+        0 0 15px #00ffff,
+        0 0 30px rgba(0, 255, 255, 0.5);
+    margin-bottom: 10px;
+    font-weight: 700;
 }
 
 .subtitulo {
-    color: #0f0;
+    color: #00ff66;
     font-size: 1rem;
+    letter-spacing: 2px;
 }
 
+/* ===== PANTALLA DE MENSAJES ===== */
 .pantalla {
-    border: 1px solid #0ff;
-    border-radius: 10px;
-    padding: 20px;
+    border: 1px solid #00ffff;
+    border-radius: 12px;
+    padding: 25px;
     background: rgba(0, 0, 0, 0.6);
-    height: 320px;
+    height: 340px;
     overflow-y: auto;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+.pantalla::-webkit-scrollbar {
+    width: 6px;
+}
+
+.pantalla::-webkit-scrollbar-thumb {
+    background: #008888;
+    border-radius: 3px;
 }
 
 .historial {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
 }
 
 .mensaje {
-    padding: 10px 15px;
-    border-radius: 8px;
-    line-height: 1.5;
+    padding: 12px 18px;
+    border-radius: 10px;
+    line-height: 1.6;
+    font-size: 0.98rem;
 }
 
 .jarvis {
-    background: rgba(0, 255, 255, 0.1);
-    border-left: 3px solid #0ff;
-    color: #0ff;
+    background: rgba(0, 255, 255, 0.08);
+    border-left: 4px solid #00ffff;
+    color: #00eeff;
 }
 
 .usuario {
-    background: rgba(0, 255, 0, 0.1);
-    border-left: 3px solid #0f0;
-    color: #0f0;
+    background: rgba(0, 255, 100, 0.08);
+    border-left: 4px solid #00ff66;
+    color: #88ffaa;
     text-align: right;
 }
 
+/* ===== BOTONES ===== */
 .controles {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 button {
-    padding: 14px 35px;
+    padding: 15px 40px;
     font-size: 1.1rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
     font-family: inherit;
     transition: all 0.3s ease;
     font-weight: bold;
+    letter-spacing: 1px;
 }
 
 .btn-escuchar {
-    background: linear-gradient(135deg, #00a8cc, #00ffcc);
-    color: #000;
+    background: linear-gradient(135deg, #0099aa, #00eebb);
+    color: #001a1a;
 }
 
 .btn-escuchar:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #0ff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
 }
 
 .btn-escuchar.escuchando {
-    background: linear-gradient(135deg, #cc0000, #ff4444);
-    animation: brillo-escucha 1s infinite alternate;
+    background: linear-gradient(135deg, #cc2200, #ff4422);
+    animation: brilloEscucha 1s infinite alternate;
 }
 
-@keyframes brillo-escucha {
-    0% { box-shadow: 0 0 10px #ff0000; }
-    100% { box-shadow: 0 0 25px #ff4444; }
+@keyframes brilloEscucha {
+    0% { box-shadow: 0 0 15px #ff3300; }
+    100% { box-shadow: 0 0 30px #ff5533; }
 }
 
 .btn-limpiar {
-    background: #222;
-    color: #aaa;
-    border: 1px solid #444;
+    background: linear-gradient(135deg, #222222, #333333);
+    color: #cccccc;
+    border: 1px solid #444444;
 }
 
 .btn-limpiar:hover {
-    background: #333;
-    color: #fff;
+    background: linear-gradient(135deg, #333333, #444444);
+    color: #ffffff;
+    border-color: #666666;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 600px) {
+    .contenedor {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        letter-spacing: 6px;
+    }
+
+    .robot-cabeza {
+        width: 150px;
+        height: 125px;
+    }
+
+    .pantalla {
+        height: 260px;
+    }
+
+    .controles {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
 }
