@@ -24,130 +24,152 @@ body {
     background: rgba(0, 20, 40, 0.85);
     box-shadow: 
         0 0 40px rgba(0, 255, 255, 0.25),
-        inset 0 0 60px rgba(0, 255, 255, 0.05),
-        0 0 80px rgba(0, 180, 180, 0.1);
+        inset 0 0 60px rgba(0, 255, 255, 0.05);
     backdrop-filter: blur(10px);
 }
 
-/* ===== CABEZA DEL ROBOT ===== */
-.robot-cabeza {
-    width: 180px;
-    height: 150px;
-    margin: 0 auto 25px;
+/* ===== SNOOPY ANIMADO ===== */
+.snoopy-contenedor {
+    width: 200px;
+    height: 220px;
+    margin: 0 auto 20px;
     position: relative;
-    animation: flotar 3.5s ease-in-out infinite;
+    animation: flotar 4s ease-in-out infinite;
 }
 
 @keyframes flotar {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
 }
 
-.antena {
-    width: 5px;
-    height: 25px;
-    background: linear-gradient(180deg, #00ffff, #008888);
-    margin: 0 auto;
-    border-radius: 3px;
+.snoopy {
     position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-.antena .luz {
-    width: 14px;
-    height: 14px;
-    background: #00ffff;
-    border-radius: 50%;
+.cabeza {
+    width: 140px;
+    height: 110px;
+    background: #ffffff;
+    border-radius: 50% 50% 45% 45%;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 2;
+}
+
+.oreja {
     position: absolute;
-    top: -7px;
-    left: -4.5px;
-    box-shadow: 
-        0 0 15px #00ffff,
-        0 0 30px #00ffff,
-        0 0 45px #00aaaa;
-    animation: parpadear 1.2s infinite;
+    width: 35px;
+    height: 55px;
+    background: #ffffff;
+    border-radius: 50%;
+    top: -5px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 }
 
-@keyframes parpadear {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.8); }
-}
+.oreja.izquierda { left: 5px; transform: rotate(-15deg); }
+.oreja.derecha { right: 5px; transform: rotate(15deg); }
 
 .cara {
-    width: 100%;
-    height: 120px;
-    background: linear-gradient(145deg, #0a2035, #051525);
-    border: 3px solid #00ffff;
-    border-radius: 40px;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    box-shadow: 
-        0 0 25px rgba(0, 255, 255, 0.3),
-        inset 0 0 20px rgba(0, 255, 255, 0.08);
 }
 
 .ojos {
     display: flex;
-    gap: 35px;
-    margin-bottom: 18px;
+    gap: 25px;
+    margin-bottom: 10px;
 }
 
 .ojo {
-    width: 26px;
-    height: 26px;
-    background: #00ff00;
+    width: 14px;
+    height: 20px;
+    background: #000000;
     border-radius: 50%;
-    box-shadow: 
-        0 0 15px #00ff00,
-        0 0 25px rgba(0, 255, 0, 0.4);
     transition: all 0.3s ease;
 }
 
-/* Estado: Hablando */
-.hablando .ojo {
-    background: #00ffff;
-    box-shadow: 
-        0 0 18px #00ffff,
-        0 0 35px rgba(0, 255, 255, 0.5);
-    animation: mirar 0.7s infinite alternate;
+/* Mirada normal */
+.snoopy .ojo {
+    transform: scaleY(1);
 }
 
-@keyframes mirar {
-    0% { transform: translateX(-4px) scale(1); }
-    100% { transform: translateX(4px) scale(1.15); }
+/* Hablando — ojos parpadean y se mueven */
+.snoopy.hablando .ojo {
+    animation: parpadearHablando 0.4s infinite alternate;
 }
 
-/* Estado: Escuchando */
-.escuchando .ojo {
-    background: #ffff00;
-    box-shadow: 
-        0 0 20px #ffff00,
-        0 0 40px rgba(255, 255, 0, 0.6);
-    animation: pulso 0.5s infinite alternate;
+@keyframes parpadearHablando {
+    0% { transform: scaleY(1); }
+    50% { transform: scaleY(0.2); }
+    100% { transform: scaleY(1); }
 }
 
-@keyframes pulso {
+/* Escuchando — ojos atentos brillantes */
+.snoopy.escuchando .ojo {
+    background: #0066ff;
+    box-shadow: 0 0 10px #0066ff, 0 0 20px rgba(0,100,255,0.4);
+    animation: atento 0.6s infinite alternate;
+}
+
+@keyframes atento {
     0% { transform: scale(1); }
-    100% { transform: scale(1.25); }
+    100% { transform: scale(1.15); }
+}
+
+.nariz {
+    width: 16px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    margin-bottom: 4px;
 }
 
 .boca {
-    width: 55px;
-    height: 9px;
-    background: linear-gradient(90deg, #00ffff, #00cccc);
-    border-radius: 5px;
-    transition: all 0.2s ease;
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+    width: 30px;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    transition: all 0.25s ease;
 }
 
-.hablando .boca {
-    animation: movimientoBoca 0.25s infinite alternate;
+.snoopy.hablando .boca {
+    animation: moverBoca 0.3s infinite alternate;
 }
 
-@keyframes movimientoBoca {
-    0% { width: 35px; height: 7px; border-radius: 4px; }
-    100% { width: 65px; height: 16px; border-radius: 50%; }
+@keyframes moverBoca {
+    0% { width: 25px; height: 3px; border-radius: 2px; }
+    100% { width: 40px; height: 10px; border-radius: 50%; }
+}
+
+.cuerpo {
+    width: 100px;
+    height: 70px;
+    background: #ffffff;
+    border-radius: 50% 50% 45% 45%;
+    margin: -15px auto 0;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.pechera {
+    width: 60px;
+    height: 35px;
+    background: linear-gradient(135deg, #e63946, #ff4d6d);
+    border-radius: 8px;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 2px 6px rgba(230,57,70,0.3);
 }
 
 /* ===== CABECERA ===== */
@@ -273,29 +295,10 @@ button {
 
 /* ===== RESPONSIVO ===== */
 @media (max-width: 600px) {
-    .contenedor {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 1.8rem;
-        letter-spacing: 6px;
-    }
-
-    .robot-cabeza {
-        width: 150px;
-        height: 125px;
-    }
-
-    .pantalla {
-        height: 260px;
-    }
-
-    .controles {
-        flex-direction: column;
-    }
-
-    button {
-        width: 100%;
-    }
+    .contenedor { padding: 20px; }
+    h1 { font-size: 1.8rem; letter-spacing: 6px; }
+    .snoopy-contenedor { width: 160px; height: 180px; }
+    .pantalla { height: 260px; }
+    .controles { flex-direction: column; }
+    button { width: 100%; }
 }
