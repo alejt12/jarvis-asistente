@@ -8,14 +8,26 @@
 </head>
 <body>
     <div class="contenedor">
+        <!-- Cabeza del Robot Animada -->
+        <div class="robot-cabeza">
+            <div class="antena"></div>
+            <div class="cara">
+                <div class="ojos">
+                    <div class="ojo izquierdo" id="ojoIzq"></div>
+                    <div class="ojo derecho" id="ojoDer"></div>
+                </div>
+                <div class="boca" id="boca"></div>
+            </div>
+        </div>
+
         <div class="cabezal">
             <h1>J.A.R.V.I.S</h1>
-            <p class="subtitulo">Sistema Activo — Escucha Continua</p>
+            <p class="subtitulo" id="estadoSistema">Sistema Activo — Esperando...</p>
         </div>
 
         <div class="pantalla">
             <div id="historial" class="historial">
-                <p class="mensaje jarvis">Sistema JARVIS en línea. Haz un clic para activarme y te escucharé siempre...</p>
+                <p class="mensaje jarvis">Sistema en línea. Haz un clic para activarme...</p>
             </div>
         </div>
 
