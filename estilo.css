@@ -2,214 +2,234 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, 'Orbitron', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
-
 body {
-    background: #050505;
+    background: #050a12;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-.escaner {
+.fondo {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(transparent 50%, rgba(0, 150, 255, 0.03) 50%);
-    background-size: 100% 4px;
-    pointer-events: none;
-    z-index: 1;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at top, #001a33 0%, #050a12 70%);
+    z-index: -1;
 }
 
 .contenedor-principal {
-    position: relative;
-    z-index: 2;
     width: 100%;
-    max-width: 750px;
-    height: 88vh;
-    max-height: 800px;
-    background: rgba(10, 15, 25, 0.9);
-    border: 1px solid #0096ff;
-    box-shadow: 
-        0 0 15px rgba(0, 150, 255, 0.4),
-        inset 0 0 30px rgba(0, 150, 255, 0.1);
-    border-radius: 12px;
+    max-width: 800px;
+    height: 90vh;
+    border: 2px solid #0099ff;
+    border-radius: 16px;
+    background: rgba(10, 20, 40, 0.9);
+    box-shadow: 0 0 30px rgba(0, 153, 255, 0.3);
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
-.cabecera {
-    padding: 25px 20px;
+/* Robot animado */
+.seccion-robot {
     text-align: center;
-    border-bottom: 1px solid rgba(0, 150, 255, 0.3);
+    padding: 15px;
+    background: rgba(0, 50, 100, 0.2);
+    border-bottom: 1px solid #0099ff44;
 }
 
-.logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: 4px;
-    color: #00ccff;
-    text-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
-    margin-bottom: 8px;
+.robot {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s ease;
 }
 
-.letra {
-    animation: parpadear 2s infinite alternate;
+.robot.hablando {
+    animation: moverCabeza 0.5s infinite alternate;
 }
-@keyframes parpadear {
-    0% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-.subtitulo {
-    color: #66ccff;
-    font-size: 13px;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    opacity: 0.8;
+@keyframes moverCabeza {
+    0% { transform: translateY(0) rotate(-2deg); }
+    100% { transform: translateY(-5px) rotate(2deg); }
 }
 
-.estado {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+.cabeza {
+    width: 70px;
+    height: 55px;
+    background: linear-gradient(180deg, #2a4a6a, #1a3a5a);
+    border-radius: 12px 12px 8px 8px;
+    margin: 0 auto;
+    position: relative;
+    border: 2px solid #00ccff;
 }
 
-.punto-luz {
-    width: 10px;
-    height: 10px;
-    background: #00ff66;
+.ojo {
+    width: 12px;
+    height: 12px;
+    background: #00ffff;
     border-radius: 50%;
-    box-shadow: 0 0 8px #00ff66;
-    animation: pulso 1.5s infinite;
+    position: absolute;
+    top: 18px;
+    box-shadow: 0 0 10px #00ffff;
+    transition: all 0.2s;
 }
-@keyframes pulso {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+.ojo.izquierdo { left: 12px; }
+.ojo.derecho { right: 12px; }
+.robot.hablando .ojo {
+    animation: parpadearOjo 0.3s infinite alternate;
+}
+@keyframes parpadearOjo {
+    0% { opacity: 0.4; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1.1); }
 }
 
-#texto-estado {
-    color: #b3e0ff;
-    font-size: 12px;
-    letter-spacing: 1px;
+.cuerpo {
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(180deg, #2a4a6a, #1a3a5a);
+    margin: 3px auto;
+    border-radius: 6px;
+    border: 2px solid #00ccff;
 }
 
-.pantalla-conversacion {
+.brazos {
+    position: absolute;
+    top: 60px;
+    width: 100%;
+}
+.brazo {
+    width: 8px;
+    height: 25px;
+    background: #2a4a6a;
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    border: 1px solid #00ccff;
+}
+.brazo.izquierdo { left: -10px; transform-origin: top; }
+.brazo.derecho { right: -10px; transform-origin: top; }
+.robot.hablando .brazo.izquierdo {
+    animation: brazoIzq 0.4s infinite alternate;
+}
+.robot.hablando .brazo.derecho {
+    animation: brazoDer 0.4s infinite alternate;
+}
+@keyframes brazoIzq {
+    0% { transform: rotate(-15deg); }
+    100% { transform: rotate(15deg); }
+}
+@keyframes brazoDer {
+    0% { transform: rotate(15deg); }
+    100% { transform: rotate(-15deg); }
+}
+
+#estado-robot {
+    color: #99ddff;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* Cabecera */
+.cabecera {
+    text-align: center;
+    padding: 15px;
+    color: #00ccff;
+}
+.cabecera h1 {
+    font-size: 26px;
+    letter-spacing: 5px;
+}
+.cabecera p {
+    font-size: 13px;
+    color: #66aadd;
+    margin-top: 4px;
+}
+.linea {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #0099ff, transparent);
+    margin-top: 10px;
+}
+
+/* Pantalla del chat */
+.pantalla {
     flex: 1;
-    padding: 25px;
+    padding: 20px;
     overflow-y: auto;
     background: rgba(0, 20, 40, 0.5);
 }
-
 .mensaje {
-    margin-bottom: 22px;
-    display: flex;
-    animation: entrada 0.4s ease forwards;
+    margin-bottom: 18px;
+    animation: aparece 0.4s ease forwards;
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
 }
-@keyframes entrada {
+@keyframes aparece {
     to { opacity: 1; transform: translateY(0); }
 }
-
-.mensaje.usuario {
-    justify-content: flex-end;
+.mensaje.tuyo { text-align: right; }
+.mensaje.jarvis { text-align: left; }
+.etiqueta {
+    font-size: 11px;
+    color: #6699cc;
+    margin-bottom: 4px;
+    display: block;
 }
-
-.burbuja {
+.texto-msg {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 14px;
     max-width: 80%;
-    padding: 14px 20px;
-    border-radius: 6px;
     line-height: 1.6;
     font-size: 15px;
 }
-
-.usuario .burbuja {
+.tuyo .texto-msg {
     background: linear-gradient(135deg, #0066cc, #0099ff);
     color: white;
-    border: 1px solid #00ccff;
-    border-top-right-radius: 2px;
+    border-bottom-right-radius: 4px;
 }
-
-.jarvis .burbuja {
-    background: rgba(0, 80, 120, 0.3);
+.jarvis .texto-msg {
+    background: rgba(0, 80, 130, 0.4);
     color: #e6f5ff;
-    border: 1px solid rgba(0, 204, 255, 0.4);
-    border-top-left-radius: 2px;
-    position: relative;
+    border: 1px solid #0099ff55;
+    border-bottom-left-radius: 4px;
 }
 
-.etiqueta-remitente {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-    opacity: 0.7;
-}
-
-.usuario .etiqueta-remitente { text-align: right; color: #99ddff; }
-.jarvis .etiqueta-remitente { text-align: left; color: #66ccff; }
-
-.pensando {
-    font-style: italic;
-    color: #80ccff;
-    opacity: 0.7;
-}
-
-.barra-entrada {
+/* Barra de entrada */
+.barra {
     display: flex;
-    padding: 20px;
+    padding: 18px;
     gap: 12px;
-    border-top: 1px solid rgba(0, 150, 255, 0.3);
-    background: rgba(0, 10, 20, 0.8);
+    border-top: 1px solid #0099ff44;
 }
-
-#campo-pregunta {
+.barra input {
     flex: 1;
-    padding: 15px 20px;
-    background: rgba(0, 40, 80, 0.4);
+    padding: 14px 20px;
+    background: rgba(0, 50, 100, 0.3);
     border: 1px solid #0066cc;
-    border-radius: 4px;
-    color: #e6f5ff;
+    border-radius: 8px;
+    color: white;
     font-size: 15px;
     outline: none;
-    transition: all 0.3s;
 }
-
-#campo-pregunta:focus {
+.barra input:focus {
     border-color: #00ccff;
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.4);
+    box-shadow: 0 0 8px #00ccff44;
 }
-
-#boton-enviar {
-    padding: 0 30px;
-    background: linear-gradient(135deg, #0066cc, #0099ff);
-    border: 1px solid #00ccff;
+.barra button {
+    padding: 0 28px;
+    background: linear-gradient(135deg, #0077ee, #0099ff);
     color: white;
-    font-size: 14px;
-    letter-spacing: 1px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.3s;
+    font-size: 14px;
+    transition: all 0.2s;
 }
-
-#boton-enviar:hover {
-    background: linear-gradient(135deg, #0077ee, #00aaff);
-    box-shadow: 0 0 12px rgba(0, 204, 255, 0.6);
-    transform: scale(1.03);
-}
-
-#boton-enviar:active {
-    transform: scale(0.98);
+.barra button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #0099ff66;
 }
