@@ -34,7 +34,6 @@ body {
     overflow: hidden;
 }
 
-/* Robot animado */
 .seccion-robot {
     text-align: center;
     padding: 15px;
@@ -107,7 +106,6 @@ body {
 
 #estado-robot { color: #99ddff; font-size: 13px; margin-top: 8px; }
 
-/* Cabecera */
 .cabecera {
     text-align: center;
     padding: 15px;
@@ -121,7 +119,6 @@ body {
     margin-top: 10px;
 }
 
-/* Chat */
 .pantalla {
     flex: 1;
     padding: 20px;
@@ -159,7 +156,6 @@ body {
 }
 .pensando { font-style: italic; color: #88ccff; opacity: 0.8; }
 
-/* Barra */
 .barra {
     display: flex;
     padding: 18px; gap: 12px;
