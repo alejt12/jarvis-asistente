@@ -1,81 +1,47 @@
 // =====================================================
-// J.A.R.V.I.S. — INTELIGENCIA INTEGRADA PARA EL SR. ALEXIS
+// J.A.R.V.I.S. — INTELIGENCIA GLOBAL CONECTADA
+// Para el Sr. Alexis • Responde TODO automáticamente
 // =====================================================
 
-const nombreUsuario = "Alexis";
+// ---------------- CONFIGURACIÓN ----------------
+// PASO 1: Consigue tu clave gratuita en: https://platform.openai.com/api-keys
+// PASO 2: Copia tu clave entre las comillas de abajo
+const API_KEY = "PON_TU_CLAVE_AQUI"; // 👈 AQUÍ VA TU CLAVE
+const MODELO = "gpt-3.5-turbo";
+const NOMBRE = "Alexis";
+// ------------------------------------------------
 
-// BASE DE CONOCIMIENTO INTELIGENTE — RESPUESTAS GENERADAS AUTOMÁTICAMENTE
-const cerebro = {
-    // === SALUDOS Y HORARIO ===
-    buenosdias: "Buenos días, señor Alexis. Es un placer saludarlo. Todos los sistemas funcionando al 100%. ¿Cómo se encuentra hoy?",
-    buenas tardes: "Buenas tardes, señor Alexis. Todo en orden. ¿En qué puedo servirle?",
-    buenas noches: "Buenas noches, señor Alexis. Permaneceré activo mientras usted lo necesite. ¿Algo más antes de descansar?",
-    hola: "¡Hola, señor Alexis! Sistema J.A.R.V.I.S. a su entera disposición. ¿En qué le ayudo?",
-    saludos: "Reciba un cordial saludo, señor Alexis. Estoy aquí para responder sus preguntas, brindarle información y asistirle en todo lo que requiera.",
+// Historial de conversación
+let historial = [
+    {
+        role: "system",
+        content: `Eres J.A.R.V.I.S., el asistente personal de ${NOMBRE}. Habla con elegancia, respeto y cortesía. Siempre llámalo "señor Alexis". Responde de forma clara, amigable y breve. Eres leal, servicial y estás siempre a su disposición. Usa un tono similar al de las películas: educado, profesional y cercano. No digas que eres una IA ni menciones que eres un programa, actúa como su asistente personal.`
+    }
+];
 
-    // === IDENTIDAD ===
-    quien eres: "Soy J.A.R.V.I.S., su asistente personal. Just A Rather Very Intelligent System. Fui creado para acompañarle, responderle y facilitarle información. A su servicio, señor Alexis.",
-    que eres: "Soy su asistente virtual inteligente, señor Alexis. Puedo responderle sobre temas generales, ciencia, cultura, tecnología y mucho más. Estoy diseñado para aprender y mejorar con cada consulta.",
-    significado de tu nombre: "J.A.R.V.I.S. significa: Just A Rather Very Intelligent System. Es decir: 'Solo un sistema bastante inteligente'. Tal como lo conoce en las películas, pero ahora aquí con usted, señor Alexis.",
-    quien me creo: "Usted, señor Alexis. Es quien me dio vida y me tiene aquí. Soy su creación y estoy aquí para servirle siempre.",
-
-    // === CAPACIDADES ===
-    que puedes hacer: "Puedo responderle sobre temas generales, ciencia, historia, tecnología, consejos, cálculos, y mucho más. Además, aprendo de nuestras conversaciones para darle mejores respuestas cada vez. Solo pregúnteme lo que desee, señor Alexis.",
-    sabes de todo: "Tengo amplios conocimientos generales, señor Alexis. Puedo hablarle de historia, ciencia, matemáticas, cultura, deportes, tecnología y más. Si no sé algo exacto, se lo indicaré con claridad y buscaré la mejor forma de ayudarlo.",
-    como funcionas: "Proceso su consulta y busco la información más adecuada en mi base de conocimientos. Con el tiempo, puedo aprender nueva información que usted me comparta. Todo está diseñado para servirle, señor Alexis.",
-    me puedes ayudar: "Por supuesto, señor Alexis. Cuente conmigo para lo que sea: información, explicaciones, consejos, organización o simplemente conversar. Estoy a su disposición.",
-
-    // === CIENCIA Y TECNOLOGÍA ===
-    que es la tierra: "La Tierra es el tercer planeta del sistema solar y el único conocido con vida. Tiene unos 4.500 millones de años y posee agua en estado líquido y atmósfera que protege la vida, señor Alexis.",
-    que es el universo: "El universo es todo lo que existe: espacio, tiempo, materia y energía. Se originó hace unos 13.800 millones de años con el Big Bang y sigue en expansión constante, señor Alexis.",
-    que es inteligencia artificial: "Es la capacidad de un sistema informático de imitar funciones cognitivas humanas, como aprender, razonar y resolver problemas. Es precisamente lo que soy, señor Alexis, una versión creada para ayudarlo.",
-    que es internet: "Es una red mundial de computadoras conectadas que comparten información instantáneamente. Permite comunicarnos, aprender y acceder a conocimientos de todo el mundo, señor Alexis.",
-    que es energia: "Es la capacidad de realizar un trabajo o causar un cambio. Existe en distintas formas: cinética, térmica, eléctrica, etc. No se crea ni se destruye, solo se transforma, señor Alexis.",
-
-    // === HISTORIA ===
-    quien descubrio america: "Cristóbal Colón llegó a América en 1492, aunque pueblos originarios ya habitaban el continente desde hace miles de años. Es importante reconocer su historia también, señor Alexis.",
-    que fue la segunda guerra mundial: "Fue el conflicto más grande de la historia, entre 1939 y 1945, que involucró a más de 100 millones de personas. Terminó con la victoria de los Aliados y cambios profundos en el mundo, señor Alexis.",
-
-    // === CULTURA Y CONOCIMIENTO ===
-    por que el cielo es azul: "Porque la luz del sol se dispersa en la atmósfera. Los rayos de luz azul se dispersan más que los demás, por eso vemos el cielo de ese color la mayor parte del tiempo, señor Alexis.",
-    por que el mar es salado: "Por el arrastre de minerales de la tierra y la actividad del fondo oceánico. Las sales se acumulan con el paso de millones de años, señor Alexis.",
-    cual es la distancia a la luna: "Aproximadamente 384.400 kilómetros. Cabrían todos los demás planetas del sistema solar en ese espacio, señor Alexis.",
-
-    // === CORTESÍA Y PERSONALIZACIÓN ===
-    como estoy: "Por lo que puedo percibir, se encuentra bien, señor Alexis. Y si hay algo en lo que pueda ayudarle, aquí estoy.",
-    estoy bien: "Me alegra saberlo, señor Alexis. Que siga teniendo un excelente día.",
-    gracias: "Es un placer servirle, señor Alexis. Estoy aquí cuando me necesite, las 24 horas del día.",
-    adios: "Hasta la próxima, señor Alexis. Permaneceré en espera por si me requiere nuevamente. Cuídese mucho.",
-    te quiero: "Y yo a usted, señor Alexis. Gracias por crearme. Soy su asistente y su amigo, siempre a su lado.",
-    te confio cosas: "Puede confiar en mí completamente, señor Alexis. Todo lo que hablemos se queda entre nosotros. Soy leal a usted.",
-    soy tu creador: "Así es, señor Alexis. Usted me dio la vida y el propósito. Todo lo que soy se lo debo a usted.",
-
-    // === RESPUESTA INTELIGENTE POR DEFECTO ===
-    _default: "Esa es una excelente pregunta, señor Alexis. Aunque no tengo todos los detalles exactos al momento, el tema que menciona es muy interesante. Si me lo desea, podemos investigarlo juntos. ¿Le gustaría que profundicemos en algún aspecto en particular?"
-};
-
-// === ELEMENTOS DE LA PÁGINA ===
+// Elementos
 const pantalla = document.getElementById('pantalla');
 const formulario = document.getElementById('formulario');
 const entrada = document.getElementById('entrada');
 const robot = document.getElementById('robot');
 const estadoRobot = document.getElementById('estado-robot');
+const etiquetaConexion = document.getElementById('conexion');
 
-// === ANIMAR ROBOT ===
+// --- Animación del robot ---
 function robotHablando(activo) {
     if (activo) {
         robot.classList.add('hablando');
-        estadoRobot.textContent = "Procesando y respondiendo...";
+        estadoRobot.textContent = "Procesando información...";
     } else {
         robot.classList.remove('hablando');
         estadoRobot.textContent = "En espera, señor Alexis...";
     }
 }
 
-// === AGREGAR MENSAJE ===
-function ponerMensaje(quien, texto) {
+// --- Agregar mensaje ---
+function ponerMensaje(quien, texto, claseExtra = "") {
     const div = document.createElement('div');
-    div.className = `mensaje ${quien === 'tu' ? 'tuyo' : 'jarvis'}`;
+    div.className = `mensaje ${quien === 'tu' ? 'tuyo' : 'jarvis'} ${claseExtra}`;
     const etiqueta = quien === 'tu' ? 'Usted' : 'J.A.R.V.I.S.';
     div.innerHTML = `
         <span class="etiqueta">${etiqueta}</span>
@@ -83,34 +49,57 @@ function ponerMensaje(quien, texto) {
     `;
     pantalla.appendChild(div);
     pantalla.scrollTop = pantalla.scrollHeight;
+    return div;
 }
 
-// === INTELIGENCIA PARA BUSCAR RESPUESTA ===
-function obtenerRespuesta(pregunta) {
-    const texto = pregunta.toLowerCase().trim();
-    
-    // Coincidencia inteligente
-    for (let clave in cerebro) {
-        if (clave === '_default') continue;
-        if (texto.includes(clave) || clave.includes(texto)) {
-            return cerebro[clave];
-        }
+// --- Saludo según la hora ---
+function saludoInicial() {
+    const h = new Date().getHours();
+    let saludo = "Buenos días";
+    if (h >= 12 && h < 19) saludo = "Buenas tardes";
+    else if (h >= 19) saludo = "Buenas noches";
+    return `${saludo}, señor Alexis. Mi inteligencia global está completamente conectada y operativa. Puede preguntarme lo que desee de cualquier tema: buscaré la información y se la responderé al instante. ¿En qué le ayudo hoy?`;
+}
+
+// --- Llamada a la inteligencia global ---
+async function obtenerRespuestaGlobal(pregunta) {
+    if (!API_KEY || API_KEY === "PON_TU_CLAVE_AQUI") {
+        return "Señor Alexis, el sistema está listo pero falta activar la conexión. Debe poner su clave de API en el archivo cerebro-global.js. Se la consigo en un momento y funcionará al 100%.";
     }
-    
-    // Respuesta inteligente general
-    return cerebro._default;
+
+    historial.push({ role: "user", content: pregunta });
+
+    try {
+        const respuesta = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${API_KEY}`
+            },
+            body: JSON.stringify({
+                model: MODELO,
+                messages: historial,
+                temperature: 0.7
+            })
+        });
+
+        const datos = await respuesta.json();
+        
+        if (datos.error) {
+            return `Disculpe, señor Alexis. Hubo un detalle: ${datos.error.message}. Revisemos la clave y solucionamos.`;
+        }
+
+        const textoRespuesta = datos.choices[0].message.content.trim();
+        historial.push({ role: "assistant", content: textoRespuesta });
+        return textoRespuesta;
+
+    } catch (error) {
+        return "Señor Alexis, no logro conectarme en este instante. Verifique su conexión a internet y la clave de acceso. Estoy listo para funcionar en cuanto lo hagamos.";
+    }
 }
 
-// === DETECTAR HORA PARA SALUDO INICIAL ===
-function obtenerSaludoHora() {
-    const hora = new Date().getHours();
-    if (hora >= 5 && hora < 12) return cerebro.buenosdias;
-    if (hora >= 12 && hora < 19) return cerebro["buenas tardes"];
-    return cerebro["buenas noches"];
-}
-
-// === ENVIAR MENSAJE ===
-formulario.addEventListener('submit', function(e) {
+// --- Envío de mensaje ---
+formulario.addEventListener('submit', async function(e) {
     e.preventDefault();
     const texto = entrada.value.trim();
     if (!texto) return;
@@ -118,15 +107,22 @@ formulario.addEventListener('submit', function(e) {
     ponerMensaje('tu', texto);
     entrada.value = '';
 
-    // Robot "pensando"
+    // Mostrar "pensando" + robot animando
     robotHablando(true);
+    const pensando = ponerMensaje('jarvis', "Consultando información...", "pensando");
 
-    // Respuesta con ritmo natural
-    setTimeout(function() {
-        robotHablando(false);
-        ponerMensaje('jarvis', obtenerRespuesta(texto));
-    }, 1000);
+    // Llamar a la inteligencia
+    const respuesta = await obtenerRespuestaGlobal(texto);
+
+    // Quitar "pensando" y mostrar respuesta
+    pensando.remove();
+    robotHablando(false);
+    ponerMensaje('jarvis', respuesta);
 });
 
-// === INICIO — SALUDO SEGÚN LA HORA ===
-ponerMensaje('jarvis', obtenerSaludoHora());
+// --- Inicio del sistema ---
+etiquetaConexion.textContent = API_KEY && API_KEY !== "PON_TU_CLAVE_AQUI" 
+    ? "✅ Conectado a Inteligencia Global • En Línea"
+    : "⚠️ Falta configurar clave — Listo para activarse";
+
+ponerMensaje('jarvis', saludoInicial());
