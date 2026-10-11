@@ -3,38 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.A.R.V.I.S. — Sistema Activo</title>
+    <title>J.A.R.V.I.S. — Señor Alexis</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <div class="escaner"></div>
-    <div class="contenedor-principal">
-        <div class="cabecera">
-            <div class="logo">
-                <span class="letra">J</span>.<span class="letra">A</span>.<span class="letra">R</span>.<span class="letra">V</span>.<span class="letra">I</span>.<span class="letra">S</span>.
+
+<div class="fondo"></div>
+<div class="contenedor-principal">
+
+    <!-- Robot animado -->
+    <div class="seccion-robot">
+        <div id="robot" class="robot">
+            <div class="cabeza">
+                <div class="ojo izquierdo"></div>
+                <div class="ojo derecho"></div>
             </div>
-            <p class="subtitulo">Sistema de Asistencia Virtual — En Línea</p>
-            <div class="estado">
-                <span class="punto-luz"></span>
-                <span id="texto-estado">Activo y funcionando</span>
+            <div class="cuerpo">
+                <div class="brazos">
+                    <div class="brazo izquierdo"></div>
+                    <div class="brazo derecho"></div>
+                </div>
             </div>
         </div>
-
-        <div id="pantalla-conversacion" class="pantalla-conversacion">
-            <!-- Aquí aparecen los mensajes -->
-        </div>
-
-        <form id="formulario-entrada" class="barra-entrada">
-            <input 
-                type="text" 
-                id="campo-pregunta" 
-                placeholder="¿En qué puedo asistirle, señor?" 
-                autocomplete="off"
-            >
-            <button type="submit" id="boton-enviar">Transmitir</button>
-        </form>
+        <p id="estado-robot">En espera...</p>
     </div>
 
-    <script src="logica-jarvis.js"></script>
+    <!-- Cabecera -->
+    <div class="cabecera">
+        <h1>J.A.R.V.I.S.</h1>
+        <p>Sistema de Asistencia Virtual — Activo</p>
+        <div class="linea"></div>
+    </div>
+
+    <!-- Chat -->
+    <div id="pantalla" class="pantalla">
+        <!-- Mensajes aquí -->
+    </div>
+
+    <!-- Entrada -->
+    <form id="formulario" class="barra">
+        <input type="text" id="entrada" placeholder="Escriba su consulta, señor Alexis..." autocomplete="off">
+        <button type="submit">Transmitir</button>
+    </form>
+</div>
+
+<script src="cerebro.js"></script>
 </body>
 </html>
