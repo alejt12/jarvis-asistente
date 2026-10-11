@@ -2,133 +2,214 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', Roboto, 'Orbitron', sans-serif;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+
 body {
-    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    background: #050505;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    overflow: hidden;
 }
 
-.contenedor-chat {
+.escaner {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 700px;
-    height: 85vh;
-    max-height: 750px;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    height: 100%;
+    background: linear-gradient(transparent 50%, rgba(0, 150, 255, 0.03) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.contenedor-principal {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 750px;
+    height: 88vh;
+    max-height: 800px;
+    background: rgba(10, 15, 25, 0.9);
+    border: 1px solid #0096ff;
+    box-shadow: 
+        0 0 15px rgba(0, 150, 255, 0.4),
+        inset 0 0 30px rgba(0, 150, 255, 0.1);
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
 .cabecera {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    color: white;
-    padding: 20px;
+    padding: 25px 20px;
     text-align: center;
+    border-bottom: 1px solid rgba(0, 150, 255, 0.3);
 }
 
-.cabecera h1 {
-    font-size: 24px;
-    margin-bottom: 4px;
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    color: #00ccff;
+    text-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+    margin-bottom: 8px;
 }
 
-.cabecera p {
+.letra {
+    animation: parpadear 2s infinite alternate;
+}
+@keyframes parpadear {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.subtitulo {
+    color: #66ccff;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
     opacity: 0.8;
-    font-size: 14px;
 }
 
-.caja-mensajes {
+.estado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.punto-luz {
+    width: 10px;
+    height: 10px;
+    background: #00ff66;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #00ff66;
+    animation: pulso 1.5s infinite;
+}
+@keyframes pulso {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+#texto-estado {
+    color: #b3e0ff;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.pantalla-conversacion {
     flex: 1;
-    padding: 20px;
+    padding: 25px;
     overflow-y: auto;
-    background: #f8fafc;
+    background: rgba(0, 20, 40, 0.5);
 }
 
 .mensaje {
-    margin-bottom: 16px;
+    margin-bottom: 22px;
     display: flex;
-    animation: aparecer 0.3s ease;
+    animation: entrada 0.4s ease forwards;
+    opacity: 0;
+    transform: translateY(10px);
 }
-
-@keyframes aparecer {
-    desde { opacity: 0; transform: translateY(10px); }
-    hasta { opacity: 1; transform: translateY(0); }
+@keyframes entrada {
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .mensaje.usuario {
     justify-content: flex-end;
 }
 
-.mensaje.contenido {
+.burbuja {
     max-width: 80%;
-    padding: 14px 18px;
-    border-radius: 18px;
-    line-height: 1.5;
+    padding: 14px 20px;
+    border-radius: 6px;
+    line-height: 1.6;
     font-size: 15px;
 }
 
-.usuario .contenido {
-    background: #4f46e5;
+.usuario .burbuja {
+    background: linear-gradient(135deg, #0066cc, #0099ff);
     color: white;
-    border-bottom-right-radius: 6px;
+    border: 1px solid #00ccff;
+    border-top-right-radius: 2px;
 }
 
-.bot .contenido {
-    background: #e2e8f0;
-    color: #1e293b;
-    border-bottom-left-radius: 6px;
+.jarvis .burbuja {
+    background: rgba(0, 80, 120, 0.3);
+    color: #e6f5ff;
+    border: 1px solid rgba(0, 204, 255, 0.4);
+    border-top-left-radius: 2px;
+    position: relative;
 }
 
-.cargando {
+.etiqueta-remitente {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    opacity: 0.7;
+}
+
+.usuario .etiqueta-remitente { text-align: right; color: #99ddff; }
+.jarvis .etiqueta-remitente { text-align: left; color: #66ccff; }
+
+.pensando {
     font-style: italic;
-    color: #64748b;
+    color: #80ccff;
+    opacity: 0.7;
 }
 
-.formulario {
+.barra-entrada {
     display: flex;
     padding: 20px;
-    gap: 10px;
-    background: white;
-    border-top: 1px solid #e2e8f0;
+    gap: 12px;
+    border-top: 1px solid rgba(0, 150, 255, 0.3);
+    background: rgba(0, 10, 20, 0.8);
 }
 
-.formulario input {
+#campo-pregunta {
     flex: 1;
-    padding: 14px 18px;
-    border: 2px solid #e2e8f0;
-    border-radius: 30px;
+    padding: 15px 20px;
+    background: rgba(0, 40, 80, 0.4);
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    color: #e6f5ff;
     font-size: 15px;
     outline: none;
-    transition: border-color 0.2s;
+    transition: all 0.3s;
 }
 
-.formulario input:focus {
-    border-color: #4f46e5;
+#campo-pregunta:focus {
+    border-color: #00ccff;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.4);
 }
 
-.formulario button {
-    padding: 14px 28px;
-    background: #4f46e5;
+#boton-enviar {
+    padding: 0 30px;
+    background: linear-gradient(135deg, #0066cc, #0099ff);
+    border: 1px solid #00ccff;
     color: white;
-    border: none;
-    border-radius: 30px;
-    font-size: 15px;
+    font-size: 14px;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
+    border-radius: 4px;
+    transition: all 0.3s;
 }
 
-.formulario button:hover {
-    background: #4338ca;
-    transform: scale(1.05);
+#boton-enviar:hover {
+    background: linear-gradient(135deg, #0077ee, #00aaff);
+    box-shadow: 0 0 12px rgba(0, 204, 255, 0.6);
+    transform: scale(1.03);
 }
 
-.formulario button:active {
-    transform: scale(0.97);
+#boton-enviar:active {
+    transform: scale(0.98);
 }
