@@ -1,177 +1,70 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 body {
-    background: #050a12;
+    background: #050a18;
+    color: white;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
 }
-
-.fondo {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top, #001a33 0%, #050a12 70%);
-    z-index: -1;
-}
-
-.contenedor-principal {
-    width: 100%;
-    max-width: 800px;
-    height: 90vh;
+.contenedor {
+    max-width: 700px;
+    margin: 0 auto;
     border: 2px solid #00ccff;
-    border-radius: 16px;
-    background: rgba(10, 20, 40, 0.9);
-    box-shadow: 0 0 30px rgba(0, 204, 255, 0.3);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    border-radius: 15px;
+    padding: 25px;
+    background: #0a1530;
+    box-shadow: 0 0 20px #00ccff44;
 }
-
-.seccion-robot {
-    text-align: center;
-    padding: 15px;
-    background: rgba(0, 50, 100, 0.2);
-    border-bottom: 1px solid #00ccff44;
-}
-
-.robot {
-    display: inline-block;
-    transition: transform 0.3s ease;
-}
-
-.robot.hablando {
-    animation: moverCabeza 0.5s infinite alternate;
-}
-@keyframes moverCabeza {
+.robot-caja { text-align: center; margin-bottom: 15px; }
+#robot { display: inline-block; transition: transform 0.3s; }
+#robot.hablando { animation: mover 0.5s infinite alternate; }
+@keyframes mover {
     0% { transform: translateY(0) rotate(-2deg); }
     100% { transform: translateY(-5px) rotate(2deg); }
 }
-
 .cabeza {
-    width: 70px; height: 55px;
-    background: linear-gradient(180deg, #2a4a6a, #1a3a5a);
-    border-radius: 12px 12px 8px 8px;
-    margin: 0 auto;
-    position: relative;
+    width: 60px; height: 45px; background: #224466;
+    border-radius: 10px; margin: 0 auto; position: relative;
     border: 2px solid #00ffff;
 }
-
 .ojo {
-    width: 12px; height: 12px;
-    background: #00ffff;
-    border-radius: 50%;
-    position: absolute;
-    top: 18px;
-    box-shadow: 0 0 10px #00ffff;
-    transition: all 0.2s;
+    width: 10px; height: 10px; background: #00ffff; border-radius: 50%;
+    position: absolute; top: 15px; box-shadow: 0 0 8px #00ffff;
 }
-.ojo.izquierdo { left: 12px; }
-.ojo.derecho { right: 12px; }
-.robot.hablando .ojo {
-    animation: parpadearOjo 0.3s infinite alternate;
-}
-@keyframes parpadearOjo {
-    0% { opacity: 0.4; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1.1); }
-}
-
+.ojo:first-child { left: 10px; }
+.ojo:last-child { right: 10px; }
 .cuerpo {
-    width: 50px; height: 40px;
-    background: linear-gradient(180deg, #2a4a6a, #1a3a5a);
-    margin: 3px auto;
-    border-radius: 6px;
-    border: 2px solid #00ffff;
+    width: 40px; height: 30px; background: #224466; margin: 3px auto;
+    border-radius: 6px; border: 2px solid #00ffff;
 }
+#estado { color: #88ddff; font-size: 13px; margin-top: 5px; }
 
-.brazos { position: absolute; top: 60px; width: 100%; }
-.brazo {
-    width: 8px; height: 25px;
-    background: #2a4a6a; border-radius: 4px;
-    position: absolute; top: 0;
-    border: 1px solid #00ffff; transform-origin: top;
-}
-.brazo.izquierdo { left: -10px; }
-.brazo.derecho { right: -10px; }
-.robot.hablando .brazo.izquierdo { animation: brazoIzq 0.4s infinite alternate; }
-.robot.hablando .brazo.derecho { animation: brazoDer 0.4s infinite alternate; }
-@keyframes brazoIzq { 0% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
-@keyframes brazoDer { 0% { transform: rotate(15deg); } 100% { transform: rotate(-15deg); } }
+h1 { text-align: center; color: #00ccff; font-size: 28px; letter-spacing: 4px; }
+.subtitulo { text-align: center; color: #99ccff; margin: 5px 0 15px; }
+hr { border: none; border-top: 1px solid #00ccff44; margin-bottom: 15px; }
 
-#estado-robot { color: #99ddff; font-size: 13px; margin-top: 8px; }
+.caja-chat {
+    height: 400px; overflow-y: auto; padding: 15px;
+    background: #0c1a35; border-radius: 10px; margin-bottom: 15px;
+}
+.mensaje { margin-bottom: 12px; }
+.de-usuario { text-align: right; }
+.de-jarvis { text-align: left; }
+.texto {
+    display: inline-block; padding: 10px 15px; border-radius: 12px; max-width: 80%;
+    line-height: 1.5;
+}
+.de-usuario .texto { background: #0066cc; color: white; border-bottom-right-radius: 4px; }
+.de-jarvis .texto { background: #153050; color: #e6f5ff; border-bottom-left-radius: 4px; }
 
-.cabecera {
-    text-align: center;
-    padding: 15px;
-    color: #00ccff;
-}
-.cabecera h1 { font-size: 26px; letter-spacing: 5px; }
-#conexion { font-size: 13px; color: #66ffcc; margin-top: 4px; }
-.linea {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #00ccff, transparent);
-    margin-top: 10px;
-}
-
-.pantalla {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background: rgba(0, 20, 40, 0.5);
-}
-.mensaje {
-    margin-bottom: 18px;
-    animation: aparece 0.4s ease forwards;
-    opacity: 0; transform: translateY(8px);
-}
-@keyframes aparece { to { opacity: 1; transform: translateY(0); } }
-.mensaje.tuyo { text-align: right; }
-.mensaje.jarvis { text-align: left; }
-.etiqueta {
-    font-size: 11px; color: #6699cc;
-    margin-bottom: 4px; display: block;
-}
-.texto-msg {
-    display: inline-block;
-    padding: 12px 18px;
-    border-radius: 14px;
-    max-width: 80%;
-    line-height: 1.6;
-    font-size: 15px;
-}
-.tuyo .texto-msg {
-    background: linear-gradient(135deg, #0066cc, #0099ff);
-    color: white; border-bottom-right-radius: 4px;
-}
-.jarvis .texto-msg {
-    background: rgba(0, 80, 130, 0.4);
-    color: #e6f5ff; border: 1px solid #00ccff55;
-    border-bottom-left-radius: 4px;
-}
-.pensando { font-style: italic; color: #88ccff; opacity: 0.8; }
-
-.barra {
-    display: flex;
-    padding: 18px; gap: 12px;
-    border-top: 1px solid #00ccff44;
-}
-.barra input {
-    flex: 1; padding: 14px 20px;
-    background: rgba(0, 50, 100, 0.3);
+form { display: flex; gap: 10px; }
+input {
+    flex: 1; padding: 12px 15px; background: #102545;
     border: 1px solid #0066cc; border-radius: 8px;
     color: white; font-size: 15px; outline: none;
 }
-.barra input:focus { border-color: #00ffff; box-shadow: 0 0 8px #00ffff44; }
-.barra button {
-    padding: 0 28px;
-    background: linear-gradient(135deg, #0077ee, #0099ff);
-    color: white; border: none; border-radius: 8px;
-    cursor: pointer; font-size: 14px; transition: all 0.2s;
+input:focus { border-color: #00ffff; box-shadow: 0 0 8px #00ffff44; }
+button {
+    padding: 0 25px; background: #0088ee; color: white;
+    border: none; border-radius: 8px; cursor: pointer; font-size: 14px;
 }
-.barra button:hover { transform: scale(1.05); box-shadow: 0 0 10px #00ccff66; }
+button:hover { background: #00aaff; }
