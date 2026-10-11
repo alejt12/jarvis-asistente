@@ -3,31 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧠 Tu Cerebro - Asistente</title>
+    <title>J.A.R.V.I.S. — Sistema Activo</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <div class="contenedor-chat">
+    <div class="escaner"></div>
+    <div class="contenedor-principal">
         <div class="cabecera">
-            <h1>🧠 Tu Cerebro</h1>
-            <p>Pregúntame lo que quieras</p>
+            <div class="logo">
+                <span class="letra">J</span>.<span class="letra">A</span>.<span class="letra">R</span>.<span class="letra">V</span>.<span class="letra">I</span>.<span class="letra">S</span>.
+            </div>
+            <p class="subtitulo">Sistema de Asistencia Virtual — En Línea</p>
+            <div class="estado">
+                <span class="punto-luz"></span>
+                <span id="texto-estado">Activo y funcionando</span>
+            </div>
         </div>
 
-        <div id="caja-mensajes" class="caja-mensajes">
-            <!-- Mensajes aparecen aquí -->
+        <div id="pantalla-conversacion" class="pantalla-conversacion">
+            <!-- Aquí aparecen los mensajes -->
         </div>
 
-        <form id="formulario" class="formulario">
+        <form id="formulario-entrada" class="barra-entrada">
             <input 
                 type="text" 
-                id="entrada" 
-                placeholder="Escribe tu pregunta aquí..." 
+                id="campo-pregunta" 
+                placeholder="¿En qué puedo asistirle, señor?" 
                 autocomplete="off"
             >
-            <button type="submit">Enviar 🚀</button>
+            <button type="submit" id="boton-enviar">Transmitir</button>
         </form>
     </div>
 
-    <script src="logica.js"></script>
+    <script src="logica-jarvis.js"></script>
 </body>
 </html>
