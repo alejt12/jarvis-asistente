@@ -2,303 +2,133 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #000b1a 0%, #001a33 50%, #001226 100%);
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Segoe UI', 'Courier New', monospace;
-    color: #00ffff;
     padding: 20px;
 }
 
-.contenedor {
+.contenedor-chat {
     width: 100%;
-    max-width: 850px;
-    border: 2px solid #00ffff;
-    border-radius: 24px;
-    padding: 35px;
-    background: rgba(0, 20, 40, 0.85);
-    box-shadow: 
-        0 0 40px rgba(0, 255, 255, 0.25),
-        inset 0 0 60px rgba(0, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-}
-
-/* ===== SNOOPY ANIMADO ===== */
-.snoopy-contenedor {
-    width: 200px;
-    height: 220px;
-    margin: 0 auto 20px;
-    position: relative;
-    animation: flotar 4s ease-in-out infinite;
-}
-
-@keyframes flotar {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-.snoopy {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.cabeza {
-    width: 140px;
-    height: 110px;
-    background: #ffffff;
-    border-radius: 50% 50% 45% 45%;
-    margin: 0 auto;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 2;
-}
-
-.oreja {
-    position: absolute;
-    width: 35px;
-    height: 55px;
-    background: #ffffff;
-    border-radius: 50%;
-    top: -5px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-.oreja.izquierda { left: 5px; transform: rotate(-15deg); }
-.oreja.derecha { right: 5px; transform: rotate(15deg); }
-
-.cara {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
+    max-width: 700px;
+    height: 85vh;
+    max-height: 750px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    overflow: hidden;
 }
 
-.ojos {
-    display: flex;
-    gap: 25px;
-    margin-bottom: 10px;
+.cabecera {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
 
-.ojo {
-    width: 14px;
-    height: 20px;
-    background: #000000;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-/* Mirada normal */
-.snoopy .ojo {
-    transform: scaleY(1);
-}
-
-/* Hablando — ojos parpadean y se mueven */
-.snoopy.hablando .ojo {
-    animation: parpadearHablando 0.4s infinite alternate;
-}
-
-@keyframes parpadearHablando {
-    0% { transform: scaleY(1); }
-    50% { transform: scaleY(0.2); }
-    100% { transform: scaleY(1); }
-}
-
-/* Escuchando — ojos atentos brillantes */
-.snoopy.escuchando .ojo {
-    background: #0066ff;
-    box-shadow: 0 0 10px #0066ff, 0 0 20px rgba(0,100,255,0.4);
-    animation: atento 0.6s infinite alternate;
-}
-
-@keyframes atento {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.15); }
-}
-
-.nariz {
-    width: 16px;
-    height: 12px;
-    background: #000;
-    border-radius: 50%;
+.cabecera h1 {
+    font-size: 24px;
     margin-bottom: 4px;
 }
 
-.boca {
-    width: 30px;
-    height: 4px;
-    background: #333;
-    border-radius: 2px;
-    transition: all 0.25s ease;
+.cabecera p {
+    opacity: 0.8;
+    font-size: 14px;
 }
 
-.snoopy.hablando .boca {
-    animation: moverBoca 0.3s infinite alternate;
-}
-
-@keyframes moverBoca {
-    0% { width: 25px; height: 3px; border-radius: 2px; }
-    100% { width: 40px; height: 10px; border-radius: 50%; }
-}
-
-.cuerpo {
-    width: 100px;
-    height: 70px;
-    background: #ffffff;
-    border-radius: 50% 50% 45% 45%;
-    margin: -15px auto 0;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.pechera {
-    width: 60px;
-    height: 35px;
-    background: linear-gradient(135deg, #e63946, #ff4d6d);
-    border-radius: 8px;
-    position: absolute;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 2px 6px rgba(230,57,70,0.3);
-}
-
-/* ===== CABECERA ===== */
-.cabezal {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-h1 {
-    font-size: 2.8rem;
-    letter-spacing: 14px;
-    text-shadow: 
-        0 0 15px #00ffff,
-        0 0 30px rgba(0, 255, 255, 0.5);
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.subtitulo {
-    color: #00ff66;
-    font-size: 1rem;
-    letter-spacing: 2px;
-}
-
-/* ===== PANTALLA DE MENSAJES ===== */
-.pantalla {
-    border: 1px solid #00ffff;
-    border-radius: 12px;
-    padding: 25px;
-    background: rgba(0, 0, 0, 0.6);
-    height: 340px;
+.caja-mensajes {
+    flex: 1;
+    padding: 20px;
     overflow-y: auto;
-    margin-bottom: 25px;
-    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
-}
-
-.pantalla::-webkit-scrollbar {
-    width: 6px;
-}
-
-.pantalla::-webkit-scrollbar-thumb {
-    background: #008888;
-    border-radius: 3px;
-}
-
-.historial {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    background: #f8fafc;
 }
 
 .mensaje {
-    padding: 12px 18px;
-    border-radius: 10px;
-    line-height: 1.6;
-    font-size: 0.98rem;
-}
-
-.jarvis {
-    background: rgba(0, 255, 255, 0.08);
-    border-left: 4px solid #00ffff;
-    color: #00eeff;
-}
-
-.usuario {
-    background: rgba(0, 255, 100, 0.08);
-    border-left: 4px solid #00ff66;
-    color: #88ffaa;
-    text-align: right;
-}
-
-/* ===== BOTONES ===== */
-.controles {
+    margin-bottom: 16px;
     display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
+    animation: aparecer 0.3s ease;
 }
 
-button {
-    padding: 15px 40px;
-    font-size: 1.1rem;
+@keyframes aparecer {
+    desde { opacity: 0; transform: translateY(10px); }
+    hasta { opacity: 1; transform: translateY(0); }
+}
+
+.mensaje.usuario {
+    justify-content: flex-end;
+}
+
+.mensaje.contenido {
+    max-width: 80%;
+    padding: 14px 18px;
+    border-radius: 18px;
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+.usuario .contenido {
+    background: #4f46e5;
+    color: white;
+    border-bottom-right-radius: 6px;
+}
+
+.bot .contenido {
+    background: #e2e8f0;
+    color: #1e293b;
+    border-bottom-left-radius: 6px;
+}
+
+.cargando {
+    font-style: italic;
+    color: #64748b;
+}
+
+.formulario {
+    display: flex;
+    padding: 20px;
+    gap: 10px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+}
+
+.formulario input {
+    flex: 1;
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 30px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.formulario input:focus {
+    border-color: #4f46e5;
+}
+
+.formulario button {
+    padding: 14px 28px;
+    background: #4f46e5;
+    color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 30px;
+    font-size: 15px;
     cursor: pointer;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    letter-spacing: 1px;
+    transition: transform 0.2s, background 0.2s;
 }
 
-.btn-escuchar {
-    background: linear-gradient(135deg, #0099aa, #00eebb);
-    color: #001a1a;
+.formulario button:hover {
+    background: #4338ca;
+    transform: scale(1.05);
 }
 
-.btn-escuchar:hover {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
-}
-
-.btn-escuchar.escuchando {
-    background: linear-gradient(135deg, #cc2200, #ff4422);
-    animation: brilloEscucha 1s infinite alternate;
-}
-
-@keyframes brilloEscucha {
-    0% { box-shadow: 0 0 15px #ff3300; }
-    100% { box-shadow: 0 0 30px #ff5533; }
-}
-
-.btn-limpiar {
-    background: linear-gradient(135deg, #222222, #333333);
-    color: #cccccc;
-    border: 1px solid #444444;
-}
-
-.btn-limpiar:hover {
-    background: linear-gradient(135deg, #333333, #444444);
-    color: #ffffff;
-    border-color: #666666;
-}
-
-/* ===== RESPONSIVO ===== */
-@media (max-width: 600px) {
-    .contenedor { padding: 20px; }
-    h1 { font-size: 1.8rem; letter-spacing: 6px; }
-    .snoopy-contenedor { width: 160px; height: 180px; }
-    .pantalla { height: 260px; }
-    .controles { flex-direction: column; }
-    button { width: 100%; }
+.formulario button:active {
+    transform: scale(0.97);
 }
