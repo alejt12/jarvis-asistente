@@ -8,39 +8,33 @@
 </head>
 <body>
 
-<div class="fondo"></div>
-<div class="contenedor-principal">
-
-    <div class="seccion-robot">
-        <div id="robot" class="robot">
+<div class="contenedor">
+    <!-- Robot -->
+    <div class="robot-caja">
+        <div id="robot">
             <div class="cabeza">
-                <div class="ojo izquierdo"></div>
-                <div class="ojo derecho"></div>
+                <div class="ojo"></div>
+                <div class="ojo"></div>
             </div>
-            <div class="cuerpo">
-                <div class="brazos">
-                    <div class="brazo izquierdo"></div>
-                    <div class="brazo derecho"></div>
-                </div>
-            </div>
+            <div class="cuerpo"></div>
         </div>
-        <p id="estado-robot">Conectando...</p>
+        <p id="estado">En línea</p>
     </div>
 
-    <div class="cabecera">
-        <h1>J.A.R.V.I.S.</h1>
-        <p id="conexion">Cargando sistema...</p>
-        <div class="linea"></div>
-    </div>
+    <h1>J.A.R.V.I.S.</h1>
+    <p class="subtitulo">Asistente de — Señor Alexis</p>
+    <hr>
 
-    <div id="pantalla" class="pantalla"></div>
+    <!-- Caja de mensajes -->
+    <div id="caja-chat" class="caja-chat"></div>
 
-    <form id="formulario" class="barra">
-        <input type="text" id="entrada" placeholder="Escriba su consulta, señor Alexis..." autocomplete="off">
-        <button type="submit">Transmitir</button>
+    <!-- Entrada -->
+    <form id="mi-formulario">
+        <input type="text" id="mi-entrada" placeholder="Escriba aquí, señor Alexis...">
+        <button type="submit">Enviar</button>
     </form>
 </div>
 
-<script src="cerebro-global.js"></script>
+<script src="codigo.js"></script>
 </body>
 </html>
