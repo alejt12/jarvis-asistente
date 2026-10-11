@@ -1,40 +1,39 @@
-//  J.A.R.V.I.S. — Sistema de Respuestas Personalizado
-//  Base de Conocimientos
+//  J.A.R.V.I.S. — Sistema CORREGIDO y funcionando
 const baseConocimientos = {
-    // Saludos y presentaciones
-    "hola": "Buenos días, señor. Sistema J.A.R.V.I.S. en línea. Todo funcionando dentro de parámetros óptimos. ¿En qué puedo asistirle?",
-    "quién eres": "Soy J.A.R.V.I.S., su asistente personal. Fui diseñado para atender sus consultas, gestionar información y brindarle asistencia en todo lo que necesite. A su entera disposición.",
-    "qué eres": "Como indiqué, soy J.A.R.V.I.S., su asistente virtual. Mi propósito es facilitarle respuestas, organizar su información y acompañarle en este proyecto. ¿Le queda claro, señor?",
-    "qué significa tu nombre": "J.A.R.V.I.S. corresponde a: Just A Rather Very Intelligent System. Un sistema desarrollado para brindar asistencia inteligente. Tal como lo conoce.",
+    // Saludos
+    "hola": "Buenos días, señor. Sistema J.A.R.V.I.S. en línea. Todo funciona perfectamente. ¿En qué puedo asistirle?",
+    "buenos dias": "Buenos días, señor. Es un placer saludarle. ¿Cómo se encuentra hoy?",
+    "buenas tardes": "Buenas tardes, señor. Todo en orden. ¿En qué le ayudo?",
+    "buenas noches": "Buenas noches, señor. Permaneceré activo mientras usted lo necesite.",
+    
+    // Identidad
+    "quien eres": "Soy J.A.R.V.I.S., su asistente personal. Just A Rather Very Intelligent System. Estoy aquí para servirle, señor.",
+    "que eres": "Soy su asistente virtual, señor. Diseñado para responder sus preguntas y brindarle apoyo en todo lo que necesite.",
+    "jarvis": "A sus órdenes, señor. ¿Me llamaba?",
     
     // Capacidades
-    "qué puedes hacer": "Puedo responder sus preguntas, recordar información, brindarle datos de su proyecto y aprender nuevos conocimientos que usted me indique. Estoy listo para procesar cualquier consulta que me transmita.",
-    "ayúdame": "Por supuesto, señor. Indíqueme en qué área requiere apoyo y procederé a asistirle de inmediato.",
-    "cómo funcionas": "Opero comparando su consulta con la base de conocimientos que usted ha establecido. Si la información se encuentra registrada, se la presento con claridad. De lo contrario, le informaré que no cuento con esos datos todavía, pero puedo aprenderlos si usted me los proporciona.",
+    "que puedes hacer": "Puedo responder sus dudas, recordar información, darle datos de su proyecto y aprender todo lo que usted me enseñe. Estoy listo para todo, señor.",
+    "ayudame": "Por supuesto, señor. Indíqueme qué necesita y lo haré de inmediato.",
+    "como funcionas": "Muy sencillo, señor. Usted me pregunta y yo busco la respuesta en mi base de conocimientos. Si me enseña cosas nuevas, las recuerdo para siempre.",
     
     // Proyecto
-    "proyecto": "El proyecto se encuentra en desarrollo activo. Todo marcha según lo previsto. Cuento con la estructura lista para que usted me incorpore la información que necesite. Avancemos.",
-    "cómo te enseño cosas": "Es muy sencillo, señor. Abra el archivo 'logica-jarvis.js' y agregue sus preguntas y respuestas siguiendo el formato que verá más abajo. Guarde los cambios y actualice esta pantalla: desde ese instante, ya conoceré la nueva información.",
+    "proyecto": "El proyecto avanza correctamente, señor. La interfaz está activa y lista para recibir instrucciones. Todo marcha según lo previsto.",
+    "como te enseño": "Abra el archivo logica-jarvis.js y agregue sus preguntas y respuestas. Guarde el archivo, actualice la página y ya lo sabré. Así de simple, señor.",
     
-    // Despedidas y cortesía
-    "gracias": "Es un placer servirle, señor. Estoy a su disposición las 24 horas del día, los 7 días de la semana.",
-    "adiós": "Hasta la próxima, señor. Permaneceré en modo espera por si requiere mi presencia nuevamente. Que tenga un excelente día.",
-    "cómo estoy": "Sus niveles de energía parecen adecuados, señor. Todo en orden desde mi perspectiva.",
-    "estás listo": "Completamente operativo y listo para recibir instrucciones, señor."
-
-    // ==================================================
-    // === AGREGUE AQUÍ SUS PROPIAS CONSULTAS Y RESPUESTAS ===
-    // === Formato:
-    // "su pregunta aquí": "respuesta que desea que diga",
-    // ==================================================
+    // Cortesía
+    "gracias": "Es un placer servirle, señor. Estoy a su disposición las 24 horas.",
+    "adios": "Hasta la próxima, señor. Permaneceré en espera por si me necesita nuevamente. Que tenga un excelente día.",
+    "como estoy": "Todo indica que se encuentra bien, señor. Todo en orden desde mi perspectiva.",
+    "estas listo": "Completamente operativo y listo, señor.",
+    "prueba": "Recibido y procesado, señor. ¡Funciona perfectamente!"
 };
 
-// Elementos de la interfaz
+// === ELEMENTOS DE LA PÁGINA ===
 const pantalla = document.getElementById('pantalla-conversacion');
 const formulario = document.getElementById('formulario-entrada');
 const campo = document.getElementById('campo-pregunta');
 
-// === FUNCIONES ===
+// === AGREGAR MENSAJE A LA PANTALLA ===
 function agregarMensaje(texto, tipo) {
     const div = document.createElement('div');
     div.className = `mensaje ${tipo}`;
@@ -48,44 +47,46 @@ function agregarMensaje(texto, tipo) {
     return div;
 }
 
+// === BUSCAR RESPUESTA ===
 function obtenerRespuesta(pregunta) {
     const texto = pregunta.toLowerCase().trim();
     
-    // Búsqueda inteligente
-    for (const [consulta, respuesta] of Object.entries(baseConocimientos)) {
-        if (texto.includes(consulta) || consulta.includes(texto)) {
+    // Coincidencia flexible
+    for (const [clave, respuesta] of Object.entries(baseConocimientos)) {
+        if (texto.includes(clave) || clave.includes(texto)) {
             return respuesta;
         }
     }
     
-    // Respuesta estándar de Jarvis
-    return "Disculpe, señor. No cuento con esa información en mi base de datos por el momento. Si me lo indica, la incorporaré de inmediato para futuras consultas. Estoy listo para aprenderlo.";
+    // Respuesta por defecto
+    return "Disculpe, señor. No cuento con esa información todavía. Si me la indica, la agrego de inmediato a mi base de conocimientos y la recordaré siempre.";
 }
 
-// === ENVIAR CONSULTA ===
-formulario.addEventListener('submit', (e) => {
+// === ENVIAR AL DAR CLIC O PRESIONAR ENTER ===
+formulario.addEventListener('submit', function(e) {
     e.preventDefault();
     const texto = campo.value.trim();
+    
     if (!texto) return;
     
-    // Mensaje del usuario
+    // Mostrar mensaje del usuario
     agregarMensaje(texto, 'usuario');
     campo.value = '';
     
-    // Mensaje de procesamiento
-    const procesando = agregarMensaje("Procesando consulta... 🧠", 'jarvis');
-    procesando.querySelector('.burbuja').classList.add('pensando');
+    // Mostrar "pensando"
+    const pensando = agregarMensaje("Procesando...", 'jarvis');
+    pensando.querySelector('.burbuja').classList.add('pensando');
     
-    // Respuesta con ritmo natural
-    setTimeout(() => {
-        procesando.remove();
+    // Dar respuesta
+    setTimeout(function() {
+        pensando.remove();
         const respuesta = obtenerRespuesta(texto);
         agregarMensaje(respuesta, 'jarvis');
-    }, 900);
+    }, 800);
 });
 
-// === MENSAJE DE BIENVENIDA INICIAL ===
+// === MENSAJE DE BIENVENIDA ===
 agregarMensaje(
-    "Sistema J.A.R.V.I.S. activo y funcionando al 100%. Todos los sistemas operativos en orden. Es un placer saludarlo, señor. ¿En qué puedo servirle hoy?",
+    "Sistema J.A.R.V.I.S. activo y funcionando al 100%. Todos los sistemas verificados. Es un gusto saludarlo, señor. ¿En qué puedo servirle hoy?",
     "jarvis"
 );
